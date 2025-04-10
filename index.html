@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Sleep - Green Noise Generator</title>
+    <style>
+        :root {
+            --primary-color: #2c6e49;
+            --secondary-color: #4c956c;
+            --accent-color: #fefee3;
+            --dark-color: #1a3a3a;
+            --light-color: #d8f3dc;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: rgba(28, 58, 58, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(76, 149, 108, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--accent-color);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .visualization {
+            width: 100%;
+            height: 150px;
+            background-color: rgba(44, 110, 73, 0.2);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .volume-icon {
+            font-size: 24px;
+            color: var(--secondary-color);
+            width: 30px;
+            text-align: center;
+        }
+
+        .slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(76, 149, 108, 0.3);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .slider::-moz-range-thumb:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn.active {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+
+        .timer-section {
+            margin-top: 25px;
+        }
+
+        .timer-presets {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .timer-btn {
+            flex: 1;
+            background-color: rgba(76, 149, 108, 0.2);
+            color: var(--light-color);
+            border: 1px solid rgba(76, 149, 108, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .timer-btn:hover {
+            background-color: rgba(76, 149, 108, 0.4);
+        }
+
+        .timer-btn.active {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+
+        .timer-display {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 15px;
+            color: var(--accent-color);
+            font-weight: 300;
+            letter-spacing: 1px;
+            height: 36px;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(216, 243, 220, 0.6);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .timer-presets {
+                flex-wrap: wrap;
+            }
+
+            .timer-btn {
+                flex: 1 0 calc(50% - 5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Serene Sleep</h1>
+        <div class="visualization">
+            <canvas id="visualizer"></canvas>
+        </div>
+        <div class="controls">
+            <div class="volume-control">
+                <div class="volume-icon">🔊</div>
+                <input type="range" min="0" max="1" step="0.01" value="0.5" class="slider" id="volume">
+            </div>
+            <div class="buttons">
+                <button class="btn" id="playBtn">Play</button>
+                <button class="btn" id="stopBtn">Stop</button>
+            </div>
+            <div class="timer-section">
+                <div class="timer-presets">
+                    <button class="timer-btn" data-time="15">15 min</button>
+                    <button class="timer-btn" data-time="30">30 min</button>
+                    <button class="timer-btn" data-time="60">1 hour</button>
+                    <button class="timer-btn" data-time="480">8 hours</button>
+                </div>
+                <div class="timer-display" id="timerDisplay"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Created for better sleep • Green noise helps mask distractions</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Audio context setup
+            let audioContext;
+            let greenNoiseNode;
+            let gainNode;
+            let analyser;
+            let isPlaying = false;
+            let timer = null;
+            let remainingTime = 0;
+            let timerInterval = null;
+            let canvasContext;
+            let canvas;
+            let visualizationData;
+
+            // Initialize the canvas for visualization
+            canvas = document.getElementById('visualizer');
+            canvasContext = canvas.getContext('2d');
+            
+            // Set canvas dimensions to match its display size
+            function resizeCanvas() {
+                const displayWidth = canvas.clientWidth;
+                const displayHeight = canvas.clientHeight;
+                
+                if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+                    canvas.width = displayWidth;
+                    canvas.height = displayHeight;
+                }
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Initialize audio context when user interacts
+            function initAudio() {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    gainNode = audioContext.createGain();
+                    gainNode.gain.value = document.getElementById('volume').value;
+                    gainNode.connect(audioContext.destination);
+                    
+                    // Create analyser for visualization
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 1024;
+                    analyser.smoothingTimeConstant = 0.85;
+                    analyser.connect(gainNode);
+                    
+                    visualizationData = new Uint8Array(analyser.frequencyBinCount);
+                }
+            }
+
+            // Generate green noise
+            function createGreenNoise() {
+                if (!audioContext) return;
+                
+                // Create buffer for noise
+                const bufferSize = 2 * audioContext.sampleRate;
+                const noiseBuffer = audioContext.createBuffer(2, bufferSize, audioContext.sampleRate);
+                
+                // Generate white noise first
+                for (let channel = 0; channel < noiseBuffer.numberOfChannels; channel++) {
+                    const output = noiseBuffer.getChannelData(channel);
+                    for (let i = 0; i < bufferSize; i++) {
+                        output[i] = Math.random() * 2 - 1;
+                    }
+                }
+                
+                // Create noise source
+                const whiteNoiseSource = audioContext.createBufferSource();
+                whiteNoiseSource.buffer = noiseBuffer;
+                whiteNoiseSource.loop = true;
+                
+                // Create filters to shape into green noise
+                // Green noise emphasizes mid-frequencies (500-4000Hz)
+                const lowShelf = audioContext.createBiquadFilter();
+                lowShelf.type = 'lowshelf';
+                lowShelf.frequency.value = 500;
+                lowShelf.gain.value = -15;
+                
+                const highShelf = audioContext.createBiquadFilter();
+                highShelf.type = 'highshelf';
+                highShelf.frequency.value = 4000;
+                highShelf.gain.value = -15;
+                
+                const midPeak = audioContext.createBiquadFilter();
+                midPeak.type = 'peaking';
+                midPeak.frequency.value = 2000;
+                midPeak.Q.value = 1.0;
+                midPeak.gain.value = 6;
+                
+                // Connect the nodes
+                whiteNoiseSource.connect(lowShelf);
+                lowShelf.connect(highShelf);
+                highShelf.connect(midPeak);
+                midPeak.connect(analyser);
+                
+                return whiteNoiseSource;
+            }
+
+            // Play button
+            document.getElementById('playBtn').addEventListener('click', function() {
+                if (isPlaying) return;
+                
+                initAudio();
+                
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                greenNoiseNode = createGreenNoise();
+                greenNoiseNode.start();
+                isPlaying = true;
+                
+                this.classList.add('active');
+                document.getElementById('stopBtn').classList.remove('active');
+                
+                // Start visualization
+                visualize();
+            });
+
+            // Stop button
+            document.getElementById('stopBtn').addEventListener('click', function() {
+                stopNoise();
+                this.classList.add('active');
+                document.getElementById('playBtn').classList.remove('active');
+                clearTimerDisplay();
+            });
+
+            // Volume control
+            document.getElementById('volume').addEventListener('input', function() {
+                if (gainNode) {
+                    gainNode.gain.value = this.value;
+                }
+            });
+
+            // Timer buttons
+            const timerButtons = document.querySelectorAll('.timer-btn');
+            timerButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (!isPlaying) {
+                        document.getElementById('playBtn').click();
+                    }
+                    
+                    // Clear previous timer
+                    if (timer) {
+                        clearTimeout(timer);
+                    }
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                    }
+                    
+                    // Reset active state
+                    timerButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Set new timer
+                    const minutes = parseInt(this.dataset.time);
+                    remainingTime = minutes * 60; // convert to seconds
+                    updateTimerDisplay();
+                    
+                    // Start countdown
+                    timerInterval = setInterval(updateTimerDisplay, 1000);
+                    
+                    // Set timeout to stop noise
+                    timer = setTimeout(() => {
+                        fadeOutAndStop();
+                    }, minutes * 60 * 1000);
+                });
+            });
+
+            // Update timer display
+            function updateTimerDisplay() {
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timerDisplay').textContent = '';
+                    return;
+                }
+                
+                remainingTime--;
+                
+                const hours = Math.floor(remainingTime / 3600);
+                const minutes = Math.floor((remainingTime % 3600) / 60);
+                const seconds = remainingTime % 60;
+                
+                let displayText = '';
+                if (hours > 0) {
+                    displayText += `${hours}h `;
+                }
+                displayText += `${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+                
+                document.getElementById('timerDisplay').textContent = displayText;
+            }
+
+            // Clear timer display
+            function clearTimerDisplay() {
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                document.getElementById('timerDisplay').textContent = '';
+                timerButtons.forEach(btn => btn.classList.remove('active'));
+            }
+
+            // Fade out and stop
+            function fadeOutAndStop() {
+                if (!isPlaying || !gainNode) return;
+                
+                const currentVolume = gainNode.gain.value;
+                const fadeOutDuration = 10; // seconds
+                
+                gainNode.gain.setValueAtTime(currentVolume, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + fadeOutDuration);
+                
+                setTimeout(() => {
+                    stopNoise();
+                    document.getElementById('stopBtn').classList.add('active');
+                    document.getElementById('playBtn').classList.remove('active');
+                    clearTimerDisplay();
+                }, fadeOutDuration * 1000);
+            }
+
+            // Stop noise
+            function stopNoise() {
+                if (greenNoiseNode) {
+                    greenNoiseNode.stop();
+                    greenNoiseNode = null;
+                }
+                isPlaying = false;
+                
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+                
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                
+                // Clear visualization
+                canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Visualization function
+            function visualize() {
+                if (!isPlaying) return;
+                
+                requestAnimationFrame(visualize);
+                
+                analyser.getByteFrequencyData(visualizationData);
+                
+                canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw a gentle wave visualization
+                const width = canvas.width;
+                const height = canvas.height;
+                const barWidth = width / analyser.frequencyBinCount * 2.5;
+                
+                canvasContext.fillStyle = 'rgba(76, 149, 108, 0.1)';
+                canvasContext.strokeStyle = 'rgba(76, 149, 108, 0.8)';
+                canvasContext.lineWidth = 2;
+                
+                canvasContext.beginPath();
+                canvasContext.moveTo(0, height);
+                
+                for (let i = 0; i < analyser.frequencyBinCount; i++) {
+                    // Focus more on mid-frequencies for green noise
+                    let multiplier = 1;
+                    if (i > analyser.frequencyBinCount * 0.2 && i < analyser.frequencyBinCount * 0.6) {
+                        multiplier = 1.5; // Emphasize mid frequencies
+                    }
+                    
+                    const x = i * barWidth;
+                    const barHeight = (visualizationData[i] / 255) * height * 0.8 * multiplier;
+                    
+                    // Create a smooth curve
+                    if (i === 0) {
+                        canvasContext.moveTo(x, height - barHeight);
+                    } else {
+                        canvasContext.lineTo(x, height - barHeight);
+                    }
+                }
+                
+                canvasContext.lineTo(width, height);
+                canvasContext.closePath();
+                canvasContext.fill();
+                canvasContext.stroke();
+                
+                // Add some particles for aesthetic effect
+                for (let i = 0; i < 3; i++) {
+                    const particleSize = Math.random() * 4 + 2;
+                    const x = Math.random() * width;
+                    const y = Math.random() * height;
+                    const opacity = Math.random() * 0.5 + 0.1;
+                    
+                    canvasContext.beginPath();
+                    canvasContext.arc(x, y, particleSize, 0, Math.PI * 2);
+                    canvasContext.fillStyle = `rgba(216, 243, 220, ${opacity})`;
+                    canvasContext.fill();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
