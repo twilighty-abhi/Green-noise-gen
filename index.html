@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serene Sleep - Green Noise Generator</title>
+    <title>Serene Sleep - Mindful Green Noise</title>
     <style>
         :root {
-            --primary-color: #2c6e49;
-            --secondary-color: #4c956c;
-            --accent-color: #fefee3;
-            --dark-color: #1a3a3a;
-            --light-color: #d8f3dc;
-            --transition: all 0.3s ease;
+            /* Color palette inspired by nature and calm */
+            --primary-hue: 140; /* Base green hue */
+            --primary-color: hsl(var(--primary-hue), 40%, 45%); /* Deeper green */
+            --secondary-color: hsl(var(--primary-hue), 35%, 60%); /* Softer green */
+            --accent-color: hsl(60, 50%, 95%); /* Soft cream */
+            --dark-color: hsl(var(--primary-hue), 20%, 15%); /* Deep muted green-grey */
+            --light-color: hsl(var(--primary-hue), 25%, 85%); /* Light muted green */
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth transition */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--dark-color);
+            background: linear-gradient(to bottom, hsl(var(--primary-hue), 20%, 10%), hsl(var(--primary-hue), 25%, 20%));
             color: var(--light-color);
             min-height: 100vh;
             display: flex;
@@ -30,48 +32,94 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            transition: var(--transition);
+            transition: background 1s ease; /* Smooth background transition */
+            overflow: hidden; /* Hide scrollbars caused by large canvas */
         }
 
         .container {
             width: 100%;
             max-width: 500px;
-            background-color: rgba(28, 58, 58, 0.8);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(76, 149, 108, 0.3);
+            background-color: hsla(var(--primary-hue), 20%, 15%, 0.85); /* Semi-transparent dark */
+            border-radius: 20px; /* Softer corners */
+            padding: 30px 35px;
+            box-shadow: 0 15px 40px hsla(0, 0%, 0%, 0.4);
+            backdrop-filter: blur(15px);
+            border: 1px solid hsla(var(--primary-hue), 25%, 30%, 0.5);
+            transition: background-color 1s ease;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             color: var(--accent-color);
             font-weight: 300;
-            letter-spacing: 1px;
+            font-size: 28px;
+            letter-spacing: 1.5px;
         }
 
         .visualization {
             width: 100%;
-            height: 150px;
-            background-color: rgba(44, 110, 73, 0.2);
-            border-radius: 10px;
-            margin-bottom: 25px;
+            height: 220px; /* Increased height */
+            border-radius: 15px;
+            margin-bottom: 30px;
             overflow: hidden;
             position: relative;
+            background: transparent; /* Canvas will handle background */
+            border: 1px solid hsla(var(--primary-hue), 25%, 30%, 0.3);
         }
 
         canvas {
             width: 100%;
             height: 100%;
             display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px; /* Increased gap */
+        }
+
+        .sound-options-label, .timer-section-label {
+            font-size: 14px;
+            color: var(--light-color);
+            opacity: 0.7;
+            margin-bottom: -15px; /* Position closer to buttons */
+            text-align: center;
+        }
+
+        .sound-options {
+            display: grid; /* Use grid for better alignment */
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .sound-options .btn, .timer-presets .timer-btn {
+            font-size: 13px; /* Smaller font for more text */
+            padding: 10px 5px; /* Adjust padding */
+            background-color: hsla(var(--primary-hue), 25%, 30%, 0.5);
+            color: var(--light-color);
+            border: 1px solid transparent; /* Start transparent */
+            border-radius: 10px;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .sound-options .btn:hover, .timer-presets .timer-btn:hover {
+            background-color: hsla(var(--primary-hue), 30%, 40%, 0.7);
+            border-color: hsla(var(--primary-hue), 30%, 50%, 0.5);
+        }
+
+        .sound-options .btn.active, .timer-presets .timer-btn.active {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            font-weight: 500;
+            border-color: transparent;
+            box-shadow: 0 2px 5px hsla(var(--primary-hue), 30%, 20%, 0.3);
         }
 
         .volume-control {
@@ -81,31 +129,36 @@
         }
 
         .volume-icon {
-            font-size: 24px;
+            font-size: 22px; /* Slightly smaller */
             color: var(--secondary-color);
             width: 30px;
             text-align: center;
+            opacity: 0.8;
         }
 
         .slider {
             flex: 1;
             -webkit-appearance: none;
-            height: 8px;
-            border-radius: 4px;
-            background: rgba(76, 149, 108, 0.3);
+            appearance: none;
+            height: 6px; /* Thinner slider */
+            border-radius: 3px;
+            background: hsla(var(--primary-hue), 25%, 30%, 0.6);
             outline: none;
             transition: var(--transition);
+            cursor: pointer;
         }
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: var(--secondary-color);
             cursor: pointer;
             transition: var(--transition);
+            border: none;
+            box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.3);
         }
 
         .slider::-webkit-slider-thumb:hover {
@@ -114,13 +167,14 @@
         }
 
         .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: var(--secondary-color);
             cursor: pointer;
             border: none;
             transition: var(--transition);
+            box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.3);
         }
 
         .slider::-moz-range-thumb:hover {
@@ -128,85 +182,82 @@
             transform: scale(1.1);
         }
 
-        .buttons {
+        .main-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px; /* Wider gap */
             margin-top: 10px;
         }
 
-        .btn {
+        .main-btn { /* Renamed from .btn to avoid conflict */
             background-color: var(--secondary-color);
             color: var(--dark-color);
             border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
+            padding: 14px 35px; /* Larger buttons */
+            border-radius: 30px; /* Fully rounded */
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px; /* Larger font */
             font-weight: 500;
             transition: var(--transition);
-            min-width: 100px;
+            min-width: 120px;
             text-align: center;
+            box-shadow: 0 4px 10px hsla(var(--primary-hue), 30%, 20%, 0.3);
         }
 
-        .btn:hover {
+        .main-btn:hover {
             background-color: var(--primary-color);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px hsla(var(--primary-hue), 30%, 20%, 0.4);
         }
 
-        .btn.active {
+        .main-btn.active {
             background-color: var(--accent-color);
-            color: var(--dark-color);
+            color: var(--primary-color);
+            box-shadow: inset 0 2px 4px hsla(0, 0%, 0%, 0.1);
         }
+        .main-btn#stopBtn.active {
+             background-color: hsl(0, 40%, 60%); /* Subtle red hint for stop */
+             color: var(--accent-color);
+        }
+
 
         .timer-section {
-            margin-top: 25px;
+            margin-top: 15px; /* Adjusted margin */
         }
 
         .timer-presets {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Four columns */
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 10px; /* Reduced margin */
         }
 
-        .timer-btn {
-            flex: 1;
-            background-color: rgba(76, 149, 108, 0.2);
-            color: var(--light-color);
-            border: 1px solid rgba(76, 149, 108, 0.3);
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .timer-btn:hover {
-            background-color: rgba(76, 149, 108, 0.4);
-        }
-
-        .timer-btn.active {
-            background-color: var(--secondary-color);
-            color: var(--dark-color);
-        }
+        /* Timer presets button styling is shared with sound options */
 
         .timer-display {
             text-align: center;
-            font-size: 24px;
-            margin-top: 15px;
+            font-size: 20px; /* Slightly smaller */
+            margin-top: 20px;
             color: var(--accent-color);
             font-weight: 300;
             letter-spacing: 1px;
-            height: 36px;
+            height: 30px; /* Adjusted height */
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .timer-display:empty {
+            opacity: 0;
         }
 
         footer {
             margin-top: 30px;
             text-align: center;
-            font-size: 14px;
-            color: rgba(216, 243, 220, 0.6);
+            font-size: 13px;
+            color: hsla(var(--primary-hue), 25%, 85%, 0.5);
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
         }
 
         /* Responsive adjustments */
@@ -214,13 +265,26 @@
             .container {
                 padding: 20px;
             }
-
-            .timer-presets {
-                flex-wrap: wrap;
+             .sound-options {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Adjust minmax */
             }
-
-            .timer-btn {
-                flex: 1 0 calc(50% - 5px);
+            .main-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .visualization {
+                height: 180px;
+            }
+        }
+        @media (max-width: 400px) {
+             .sound-options {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on very small screens */
+            }
+            .timer-presets {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns */
             }
         }
     </style>
@@ -232,334 +296,518 @@
             <canvas id="visualizer"></canvas>
         </div>
         <div class="controls">
+             <div class="sound-options-label">Choose Ambiance</div>
+            <div class="sound-options">
+                <button class="btn active" data-sound="forest" data-hue="120">Forest Stream</button>
+                <button class="btn" data-sound="waterfall" data-hue="200">Distant Fall</button>
+                <button class="btn" data-sound="rain" data-hue="180">Gentle Rain</button>
+                <button class="btn" data-sound="trees" data-hue="90">Rustling Trees</button>
+                <button class="btn" data-sound="ocean" data-hue="210">Calm Waves</button>
+                 <button class="btn" data-sound="ambient" data-hue="270">Deep Space</button> <!-- Added an ambient option -->
+            </div>
+
             <div class="volume-control">
                 <div class="volume-icon">🔊</div>
-                <input type="range" min="0" max="1" step="0.01" value="0.5" class="slider" id="volume">
+                <input type="range" min="0" max="1" step="0.01" value="0.4" class="slider" id="volume"> <!-- Default volume lower -->
             </div>
-            <div class="buttons">
-                <button class="btn" id="playBtn">Play</button>
-                <button class="btn" id="stopBtn">Stop</button>
+
+            <div class="main-buttons">
+                <button class="main-btn" id="playBtn">Play</button>
+                <button class="main-btn" id="stopBtn">Stop</button>
             </div>
+
             <div class="timer-section">
+                 <div class="timer-section-label">Set Timer</div>
                 <div class="timer-presets">
+                    <!-- Updated timer presets -->
                     <button class="timer-btn" data-time="15">15 min</button>
                     <button class="timer-btn" data-time="30">30 min</button>
-                    <button class="timer-btn" data-time="60">1 hour</button>
-                    <button class="timer-btn" data-time="480">8 hours</button>
+                    <button class="timer-btn" data-time="90">90 min</button>
+                    <button class="timer-btn" data-time="180">3 hours</button>
                 </div>
                 <div class="timer-display" id="timerDisplay"></div>
             </div>
         </div>
     </div>
     <footer>
-        <p>Created for better sleep • Green noise helps mask distractions</p>
+        <p>Mindful Green Noise • Drift into tranquility</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Audio context setup
+            // --- Configuration ---
+            const PARTICLE_COUNT_FACTOR = 25; // Lower number means more particles (e.g., 20 for more, 30 for less)
+            const BREATH_SPEED = 0.004; // Speed of the visual breath cycle (lower is slower)
+            const FADE_OUT_DURATION = 10; // Seconds for audio fade out
+
+            // --- State Variables ---
             let audioContext;
-            let greenNoiseNode;
+            let noiseNode;
             let gainNode;
             let analyser;
             let isPlaying = false;
             let timer = null;
             let remainingTime = 0;
             let timerInterval = null;
-            let canvasContext;
-            let canvas;
-            let visualizationData;
+            let currentSound = 'forest';
+            let targetHue = 120; // Default hue for Forest Stream
+            let currentHue = 120; // Hue used for drawing, smoothly transitions to targetHue
+            let breathProgress = 0; // 0 to 1 for a complete breath cycle (inhale + exhale)
+            let particles = [];
+            let animationFrameId;
 
-            // Initialize the canvas for visualization
-            canvas = document.getElementById('visualizer');
-            canvasContext = canvas.getContext('2d');
-            
-            // Set canvas dimensions to match its display size
+            // --- DOM Elements ---
+            const canvas = document.getElementById('visualizer');
+            const canvasContext = canvas.getContext('2d');
+            const volumeSlider = document.getElementById('volume');
+            const playBtn = document.getElementById('playBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const timerDisplay = document.getElementById('timerDisplay');
+            const soundOptionBtns = document.querySelectorAll('.sound-options .btn');
+            const timerPresetBtns = document.querySelectorAll('.timer-presets .timer-btn');
+            const bodyElement = document.body;
+            const containerElement = document.querySelector('.container');
+
+            // --- Canvas & Particle Setup ---
+            let width, height;
+
             function resizeCanvas() {
-                const displayWidth = canvas.clientWidth;
-                const displayHeight = canvas.clientHeight;
-                
-                if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-                    canvas.width = displayWidth;
-                    canvas.height = displayHeight;
+                width = canvas.clientWidth;
+                height = canvas.clientHeight;
+                if (canvas.width !== width || canvas.height !== height) {
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                createParticles(); // Recreate particles on resize
+            }
+
+            function createParticles() {
+                particles = [];
+                const particleCount = Math.max(10, Math.floor(width / PARTICLE_COUNT_FACTOR)); // Ensure at least a few particles
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        size: Math.random() * 2.5 + 1.5, // Slightly larger base size
+                        opacity: Math.random() * 0.2 + 0.05, // Lower opacity
+                        speedX: (Math.random() - 0.5) * 0.15, // Very slow drift
+                        speedY: (Math.random() - 0.5) * 0.15,
+                        hueOffset: Math.random() * 30 - 15, // More hue variation
+                        phase: Math.random() * Math.PI * 2 // Random phase for movement
+                    });
                 }
             }
-            
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
 
-            // Initialize audio context when user interacts
+            // --- Audio Initialization and Control ---
             function initAudio() {
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
                     gainNode = audioContext.createGain();
-                    gainNode.gain.value = document.getElementById('volume').value;
+                    gainNode.gain.setValueAtTime(volumeSlider.value, audioContext.currentTime); // Set initial volume correctly
                     gainNode.connect(audioContext.destination);
-                    
-                    // Create analyser for visualization
+
                     analyser = audioContext.createAnalyser();
-                    analyser.fftSize = 1024;
-                    analyser.smoothingTimeConstant = 0.85;
+                    analyser.fftSize = 512; // Smaller FFT size for potentially smoother analysis
+                    analyser.smoothingTimeConstant = 0.9; // High smoothing
                     analyser.connect(gainNode);
-                    
-                    visualizationData = new Uint8Array(analyser.frequencyBinCount);
+                }
+                 // Ensure context is running (especially after user interaction)
+                 if (audioContext.state === 'suspended') {
+                    audioContext.resume();
                 }
             }
 
-            // Generate green noise
-            function createGreenNoise() {
-                if (!audioContext) return;
-                
-                // Create buffer for noise
-                const bufferSize = 2 * audioContext.sampleRate;
-                const noiseBuffer = audioContext.createBuffer(2, bufferSize, audioContext.sampleRate);
-                
-                // Generate white noise first
-                for (let channel = 0; channel < noiseBuffer.numberOfChannels; channel++) {
-                    const output = noiseBuffer.getChannelData(channel);
-                    for (let i = 0; i < bufferSize; i++) {
-                        output[i] = Math.random() * 2 - 1;
-                    }
+            function createSound(type) {
+                if (!audioContext) initAudio(); // Ensure context exists
+
+                // --- Noise Generation (Shared) ---
+                const bufferSize = audioContext.sampleRate * 2; // 2 seconds of noise buffer
+                const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate); // Mono noise
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1; // White noise
                 }
-                
-                // Create noise source
+
                 const whiteNoiseSource = audioContext.createBufferSource();
                 whiteNoiseSource.buffer = noiseBuffer;
                 whiteNoiseSource.loop = true;
-                
-                // Create filters to shape into green noise
-                // Green noise emphasizes mid-frequencies (500-4000Hz)
+
+                // --- Filtering ---
+                // Green noise focuses on mid frequencies (~500Hz - 4000Hz)
+                // We use filters to shape the white noise.
                 const lowShelf = audioContext.createBiquadFilter();
                 lowShelf.type = 'lowshelf';
-                lowShelf.frequency.value = 500;
-                lowShelf.gain.value = -15;
-                
+
                 const highShelf = audioContext.createBiquadFilter();
                 highShelf.type = 'highshelf';
-                highShelf.frequency.value = 4000;
-                highShelf.gain.value = -15;
-                
-                const midPeak = audioContext.createBiquadFilter();
-                midPeak.type = 'peaking';
-                midPeak.frequency.value = 2000;
-                midPeak.Q.value = 1.0;
-                midPeak.gain.value = 6;
-                
-                // Connect the nodes
+
+                const midPeak1 = audioContext.createBiquadFilter();
+                midPeak1.type = 'peaking';
+
+                const midPeak2 = audioContext.createBiquadFilter(); // Optional second peak for complexity
+                midPeak2.type = 'peaking';
+
+
+                // --- Filter Settings per Sound Type ---
+                // These values shape the noise to mimic the descriptions
+                let lsFreq = 500, lsGain = -15;
+                let hsFreq = 4000, hsGain = -15;
+                let p1Freq = 1500, p1Q = 1.0, p1Gain = 6;
+                let p2Freq = 2500, p2Q = 1.5, p2Gain = 0; // Second peak off by default
+
+                switch (type) {
+                    case 'forest': // Forest Stream: Balanced mids, slightly lower focus
+                        lsFreq = 400; lsGain = -12;
+                        hsFreq = 4000; hsGain = -16;
+                        p1Freq = 1200; p1Q = 0.8; p1Gain = 5;
+                        p2Freq = 2200; p2Q = 1.2; p2Gain = 3; // Add subtle complexity
+                        break;
+                    case 'waterfall': // Distant Waterfall: Brighter, higher mids
+                        lsFreq = 600; lsGain = -18;
+                        hsFreq = 5500; hsGain = -10;
+                        p1Freq = 2800; p1Q = 1.2; p1Gain = 8;
+                        break;
+                    case 'rain': // Gentle Rain: Softer, higher frequency focus
+                        lsFreq = 800; lsGain = -20;
+                        hsFreq = 6000; hsGain = -8;
+                        p1Freq = 3500; p1Q = 1.5; p1Gain = 6;
+                        break;
+                    case 'trees': // Rustling Trees: Broader mid-range, less sharp
+                        lsFreq = 300; lsGain = -16;
+                        hsFreq = 3800; hsGain = -14;
+                        p1Freq = 1800; p1Q = 0.7; p1Gain = 7;
+                        break;
+                    case 'ocean': // Calm Waves: Lower mids, softer feel
+                        lsFreq = 250; lsGain = -10;
+                        hsFreq = 3000; hsGain = -18;
+                        p1Freq = 900; p1Q = 0.6; p1Gain = 4;
+                        p2Freq = 1600; p2Q = 1.0; p2Gain = 2; // Add subtle wave character
+                        break;
+                    case 'ambient': // Deep Space: Very low-mid focus, smooth
+                        lsFreq = 150; lsGain = -8;
+                        hsFreq = 2500; hsGain = -20;
+                        p1Freq = 600; p1Q = 0.5; p1Gain = 3;
+                        break;
+                }
+
+                // Apply filter values
+                lowShelf.frequency.setValueAtTime(lsFreq, audioContext.currentTime);
+                lowShelf.gain.setValueAtTime(lsGain, audioContext.currentTime);
+                highShelf.frequency.setValueAtTime(hsFreq, audioContext.currentTime);
+                highShelf.gain.setValueAtTime(hsGain, audioContext.currentTime);
+                midPeak1.frequency.setValueAtTime(p1Freq, audioContext.currentTime);
+                midPeak1.Q.setValueAtTime(p1Q, audioContext.currentTime);
+                midPeak1.gain.setValueAtTime(p1Gain, audioContext.currentTime);
+                midPeak2.frequency.setValueAtTime(p2Freq, audioContext.currentTime);
+                midPeak2.Q.setValueAtTime(p2Q, audioContext.currentTime);
+                midPeak2.gain.setValueAtTime(p2Gain, audioContext.currentTime);
+
+                // Connect the filter chain
                 whiteNoiseSource.connect(lowShelf);
                 lowShelf.connect(highShelf);
-                highShelf.connect(midPeak);
-                midPeak.connect(analyser);
-                
+                highShelf.connect(midPeak1);
+                midPeak1.connect(midPeak2); // Include second peak
+                midPeak2.connect(analyser); // Connect final filter to analyser
+
                 return whiteNoiseSource;
             }
 
-            // Play button
-            document.getElementById('playBtn').addEventListener('click', function() {
+            function playNoise() {
                 if (isPlaying) return;
-                
-                initAudio();
-                
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
+                initAudio(); // Ensure context is ready
+
+                if (noiseNode) { // Clean up previous node if any (safety)
+                    try { noiseNode.stop(); } catch (e) {}
+                    noiseNode.disconnect();
                 }
-                
-                greenNoiseNode = createGreenNoise();
-                greenNoiseNode.start();
-                isPlaying = true;
-                
-                this.classList.add('active');
-                document.getElementById('stopBtn').classList.remove('active');
-                
-                // Start visualization
+
+                noiseNode = createSound(currentSound);
+                try {
+                     noiseNode.start();
+                     isPlaying = true;
+                     playBtn.classList.add('active');
+                     stopBtn.classList.remove('active');
+                     startVisualization();
+                } catch (error) {
+                     console.error("Error starting audio:", error);
+                     // Provide user feedback here if possible
+                     isPlaying = false; // Reset state
+                }
+            }
+
+            function stopNoise(fadeOut = false) {
+                if (!isPlaying || !noiseNode) return;
+
+                 if (fadeOut && gainNode) {
+                    const currentVolume = gainNode.gain.value;
+                    gainNode.gain.cancelScheduledValues(audioContext.currentTime); // Clear any previous fades
+                    gainNode.gain.setValueAtTime(currentVolume, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + FADE_OUT_DURATION); // Fade to near zero
+
+                    // Stop the source node after the fade is complete
+                     if(timer) clearTimeout(timer); // Clear the main timer if fading manually
+                     timer = setTimeout(() => {
+                        if (noiseNode) {
+                           try { noiseNode.stop(); } catch(e) {}
+                            noiseNode.disconnect();
+                            noiseNode = null;
+                         }
+                         // Reset volume after fade for next play
+                         if (gainNode) gainNode.gain.setValueAtTime(volumeSlider.value, audioContext.currentTime);
+                        completeStop(); // Finish the stop process
+                    }, FADE_OUT_DURATION * 1000);
+
+                } else {
+                     // Immediate stop
+                     try { noiseNode.stop(); } catch(e) {}
+                     noiseNode.disconnect();
+                     noiseNode = null;
+                     if (gainNode) gainNode.gain.setValueAtTime(volumeSlider.value, audioContext.currentTime); // Reset volume immediately
+                     completeStop();
+                 }
+            }
+
+             function completeStop() {
+                 isPlaying = false;
+                 stopVisualization();
+                 playBtn.classList.remove('active');
+                 stopBtn.classList.add('active'); // Indicate stop is active
+                 clearTimer(); // Also clear timer display and active states
+             }
+
+
+            // --- Visualization ---
+            function startVisualization() {
+                if (animationFrameId) cancelAnimationFrame(animationFrameId); // Prevent duplicates
+                resizeCanvas(); // Ensure dimensions are correct
                 visualize();
-            });
+            }
 
-            // Stop button
-            document.getElementById('stopBtn').addEventListener('click', function() {
-                stopNoise();
-                this.classList.add('active');
-                document.getElementById('playBtn').classList.remove('active');
-                clearTimerDisplay();
-            });
-
-            // Volume control
-            document.getElementById('volume').addEventListener('input', function() {
-                if (gainNode) {
-                    gainNode.gain.value = this.value;
+            function stopVisualization() {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
                 }
-            });
+                 // Optionally clear the canvas on stop
+                // setTimeout(() => canvasContext.clearRect(0, 0, width, height), 100);
+                 // Or fade it out
+                 canvasContext.fillStyle = `hsla(var(--primary-hue), 20%, 15%, 0.1)`; // Fade effect
+                 canvasContext.fillRect(0, 0, width, height);
+            }
 
-            // Timer buttons
-            const timerButtons = document.querySelectorAll('.timer-btn');
-            timerButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    if (!isPlaying) {
-                        document.getElementById('playBtn').click();
-                    }
-                    
-                    // Clear previous timer
-                    if (timer) {
-                        clearTimeout(timer);
-                    }
-                    if (timerInterval) {
-                        clearInterval(timerInterval);
-                    }
-                    
-                    // Reset active state
-                    timerButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Set new timer
-                    const minutes = parseInt(this.dataset.time);
-                    remainingTime = minutes * 60; // convert to seconds
-                    updateTimerDisplay();
-                    
-                    // Start countdown
-                    timerInterval = setInterval(updateTimerDisplay, 1000);
-                    
-                    // Set timeout to stop noise
-                    timer = setTimeout(() => {
-                        fadeOutAndStop();
-                    }, minutes * 60 * 1000);
-                });
-            });
+            function visualize() {
+                if (!isPlaying && !document.hidden) { // Stop animation if not playing or tab hidden
+                   // Keep drawing a static frame for a bit, then stop? Or stop immediately.
+                   // stopVisualization(); // Option 1: Stop immediately
+                   // return;           // Option 1
+                }
 
-            // Update timer display
+                animationFrameId = requestAnimationFrame(visualize);
+
+                 // Smoothly transition the current drawing hue towards the target hue
+                 currentHue += (targetHue - currentHue) * 0.05; // Adjust 0.05 for faster/slower color transition
+
+                 // Update body/container background HSL based on currentHue for cohesive feel
+                 bodyElement.style.setProperty('--primary-hue', Math.round(currentHue));
+                 containerElement.style.setProperty('--primary-hue', Math.round(currentHue));
+
+
+                // --- Clear canvas with a soft gradient background ---
+                const gradient = canvasContext.createRadialGradient(
+                    width / 2, height / 2, 0,
+                    width / 2, height / 2, Math.max(width, height) * 0.7
+                );
+                gradient.addColorStop(0, `hsla(${currentHue}, 50%, 20%, 0.8)`); // Center color
+                gradient.addColorStop(1, `hsla(${currentHue}, 40%, 10%, 0.9)`); // Outer color
+                canvasContext.fillStyle = gradient;
+                canvasContext.fillRect(0, 0, width, height);
+
+                // --- Update Breathing Cycle ---
+                // Simple sine wave for smooth inhale/exhale transition
+                breathCycle += BREATH_SPEED;
+                breathProgress = (Math.sin(breathCycle) + 1) / 2; // Oscillates between 0 and 1
+
+                // --- Draw Central Breathing Element ---
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const baseRadius = Math.min(width, height) * 0.1; // Smaller base
+                const breathAmplitude = Math.min(width, height) * 0.08; // Amplitude of breath expansion
+                const currentRadius = baseRadius + breathProgress * breathAmplitude;
+
+                // Outer Glow
+                const glowRadius = currentRadius * 2.5; // Larger, softer glow
+                const glowGradient = canvasContext.createRadialGradient(
+                    centerX, centerY, currentRadius * 0.5, // Start glow closer to center
+                    centerX, centerY, glowRadius
+                );
+                glowGradient.addColorStop(0, `hsla(${currentHue}, 70%, 60%, 0.15)`); // Inner glow color
+                glowGradient.addColorStop(0.5, `hsla(${currentHue}, 70%, 55%, 0.05)`);
+                glowGradient.addColorStop(1, `hsla(${currentHue}, 60%, 50%, 0)`); // Fade out
+
+                canvasContext.beginPath();
+                canvasContext.arc(centerX, centerY, glowRadius, 0, Math.PI * 2);
+                canvasContext.fillStyle = glowGradient;
+                canvasContext.fill();
+
+                // Inner Circle (subtle)
+                canvasContext.beginPath();
+                canvasContext.arc(centerX, centerY, currentRadius, 0, Math.PI * 2);
+                canvasContext.fillStyle = `hsla(${currentHue}, 65%, 70%, 0.03)`; // Very subtle fill
+                // canvasContext.lineWidth = 1; // Optional thin border
+                // canvasContext.strokeStyle = `hsla(${currentHue}, 70%, 80%, 0.1)`;
+                // canvasContext.stroke();
+                canvasContext.fill();
+
+
+                // --- Update and Draw Particles ---
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+
+                    // Update position with drift + subtle breath influence
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+
+                     // Add slight circular motion based on phase
+                    const angle = p.phase + breathCycle * 0.1; // Rotate slowly
+                    p.x += Math.cos(angle) * 0.05;
+                    p.y += Math.sin(angle) * 0.05;
+
+
+                    // Gentle push/pull from center based on breath
+                    const dx = p.x - centerX;
+                    const dy = p.y - centerY;
+                    const dist = Math.sqrt(dx * dx + dy * dy) + 0.1; // Avoid division by zero
+                    const pushPullFactor = (breathProgress - 0.5) * 0.1 * (1 - Math.min(1, dist / (width * 0.4))); // Stronger effect near center
+                    p.x += (dx / dist) * pushPullFactor;
+                    p.y += (dy / dist) * pushPullFactor;
+
+
+                    // Wrap around edges
+                    if (p.x < -p.size) p.x = width + p.size;
+                    if (p.x > width + p.size) p.x = -p.size;
+                    if (p.y < -p.size) p.y = height + p.size;
+                    if (p.y > height + p.size) p.y = -p.size;
+
+                     // Calculate particle hue and opacity
+                     const particleHue = (currentHue + p.hueOffset + 180) % 360; // Use complementary hue for contrast
+                     const particleOpacity = p.opacity * (0.5 + breathProgress * 0.5); // Pulse opacity with breath
+
+                    // Draw particle as a soft circle
+                    canvasContext.beginPath();
+                    canvasContext.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+
+                     // Soft gradient fill for particles
+                     const particleGradient = canvasContext.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 1.5);
+                     particleGradient.addColorStop(0, `hsla(${particleHue}, 60%, 80%, ${particleOpacity * 0.8})`);
+                     particleGradient.addColorStop(1, `hsla(${particleHue}, 50%, 70%, 0)`);
+
+                    canvasContext.fillStyle = particleGradient; // Use the gradient
+                    canvasContext.fill();
+                }
+            }
+
+            // --- Timer Logic ---
+            function startTimer(minutes) {
+                clearTimer(); // Clear previous timers first
+
+                remainingTime = minutes * 60;
+                updateTimerDisplay(); // Show initial time
+
+                timerInterval = setInterval(updateTimerDisplay, 1000);
+
+                timer = setTimeout(() => {
+                    stopNoise(true); // Fade out when timer ends
+                }, minutes * 60 * 1000);
+            }
+
+             function clearTimer() {
+                 if (timer) clearTimeout(timer);
+                 if (timerInterval) clearInterval(timerInterval);
+                 timer = null;
+                 timerInterval = null;
+                 remainingTime = 0;
+                 timerDisplay.textContent = '';
+                 timerPresetBtns.forEach(btn => btn.classList.remove('active'));
+             }
+
             function updateTimerDisplay() {
                 if (remainingTime <= 0) {
-                    clearInterval(timerInterval);
-                    document.getElementById('timerDisplay').textContent = '';
+                    clearTimer();
                     return;
                 }
-                
-                remainingTime--;
-                
+
                 const hours = Math.floor(remainingTime / 3600);
                 const minutes = Math.floor((remainingTime % 3600) / 60);
                 const seconds = remainingTime % 60;
-                
+
                 let displayText = '';
                 if (hours > 0) {
                     displayText += `${hours}h `;
                 }
+                 // Always show minutes and seconds with padding
                 displayText += `${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
-                
-                document.getElementById('timerDisplay').textContent = displayText;
+
+                timerDisplay.textContent = displayText;
+                remainingTime--;
             }
 
-            // Clear timer display
-            function clearTimerDisplay() {
-                if (timer) {
-                    clearTimeout(timer);
-                    timer = null;
-                }
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                }
-                document.getElementById('timerDisplay').textContent = '';
-                timerButtons.forEach(btn => btn.classList.remove('active'));
-            }
+            // --- Event Listeners ---
+            soundOptionBtns.forEach(button => {
+                button.addEventListener('click', function() {
+                    currentSound = this.dataset.sound;
+                    targetHue = parseInt(this.dataset.hue, 10); // Update target hue
 
-            // Fade out and stop
-            function fadeOutAndStop() {
-                if (!isPlaying || !gainNode) return;
-                
-                const currentVolume = gainNode.gain.value;
-                const fadeOutDuration = 10; // seconds
-                
-                gainNode.gain.setValueAtTime(currentVolume, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + fadeOutDuration);
-                
-                setTimeout(() => {
-                    stopNoise();
-                    document.getElementById('stopBtn').classList.add('active');
-                    document.getElementById('playBtn').classList.remove('active');
-                    clearTimerDisplay();
-                }, fadeOutDuration * 1000);
-            }
+                    soundOptionBtns.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
 
-            // Stop noise
-            function stopNoise() {
-                if (greenNoiseNode) {
-                    greenNoiseNode.stop();
-                    greenNoiseNode = null;
-                }
-                isPlaying = false;
-                
-                if (timer) {
-                    clearTimeout(timer);
-                    timer = null;
-                }
-                
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                }
-                
-                // Clear visualization
-                canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-            }
-
-            // Visualization function
-            function visualize() {
-                if (!isPlaying) return;
-                
-                requestAnimationFrame(visualize);
-                
-                analyser.getByteFrequencyData(visualizationData);
-                
-                canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Draw a gentle wave visualization
-                const width = canvas.width;
-                const height = canvas.height;
-                const barWidth = width / analyser.frequencyBinCount * 2.5;
-                
-                canvasContext.fillStyle = 'rgba(76, 149, 108, 0.1)';
-                canvasContext.strokeStyle = 'rgba(76, 149, 108, 0.8)';
-                canvasContext.lineWidth = 2;
-                
-                canvasContext.beginPath();
-                canvasContext.moveTo(0, height);
-                
-                for (let i = 0; i < analyser.frequencyBinCount; i++) {
-                    // Focus more on mid-frequencies for green noise
-                    let multiplier = 1;
-                    if (i > analyser.frequencyBinCount * 0.2 && i < analyser.frequencyBinCount * 0.6) {
-                        multiplier = 1.5; // Emphasize mid frequencies
+                    if (isPlaying) {
+                        stopNoise(false); // Stop immediately
+                        playNoise(); // Start new sound
                     }
-                    
-                    const x = i * barWidth;
-                    const barHeight = (visualizationData[i] / 255) * height * 0.8 * multiplier;
-                    
-                    // Create a smooth curve
-                    if (i === 0) {
-                        canvasContext.moveTo(x, height - barHeight);
-                    } else {
-                        canvasContext.lineTo(x, height - barHeight);
+                });
+            });
+
+            playBtn.addEventListener('click', playNoise);
+            stopBtn.addEventListener('click', () => stopNoise(false)); // Immediate stop on button press
+
+            volumeSlider.addEventListener('input', function() {
+                if (gainNode && audioContext) { // Check if gainNode exists
+                    // Use setTargetAtTime for slightly smoother volume changes
+                     gainNode.gain.setTargetAtTime(this.value, audioContext.currentTime, 0.01);
+                }
+            });
+
+            timerPresetBtns.forEach(button => {
+                button.addEventListener('click', function() {
+                    const minutes = parseInt(this.dataset.time);
+                    if (!isNaN(minutes)) {
+                        timerPresetBtns.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        if (!isPlaying) playNoise(); // Start playing if not already
+                        startTimer(minutes);
                     }
-                }
-                
-                canvasContext.lineTo(width, height);
-                canvasContext.closePath();
-                canvasContext.fill();
-                canvasContext.stroke();
-                
-                // Add some particles for aesthetic effect
-                for (let i = 0; i < 3; i++) {
-                    const particleSize = Math.random() * 4 + 2;
-                    const x = Math.random() * width;
-                    const y = Math.random() * height;
-                    const opacity = Math.random() * 0.5 + 0.1;
-                    
-                    canvasContext.beginPath();
-                    canvasContext.arc(x, y, particleSize, 0, Math.PI * 2);
-                    canvasContext.fillStyle = `rgba(216, 243, 220, ${opacity})`;
-                    canvasContext.fill();
-                }
-            }
+                });
+            });
+
+             // Handle visibility change to pause/resume animation (saves resources)
+             document.addEventListener('visibilitychange', () => {
+                 if (document.hidden) {
+                     if (animationFrameId) {
+                         cancelAnimationFrame(animationFrameId);
+                         animationFrameId = null;
+                     }
+                 } else {
+                     if (isPlaying && !animationFrameId) {
+                         startVisualization(); // Resume animation if playing and was stopped
+                     }
+                 }
+             });
+
+            // --- Initial Setup ---
+            resizeCanvas(); // Initial canvas sizing
+            stopBtn.classList.add('active'); // Start with stop button visually active
+
         });
     </script>
 </body>
