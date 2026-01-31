@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Serene Sleep - Mindful Green Noise</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="A minimalist green noise generator for sleep, relaxation, and focus. Choose from soothing ambiances.">
+    <meta name="author" content="Abhiram NJ">
+    <meta name="creator" content="Abhiram NJ">
+    <meta name="publisher" content="Abhiram NJ">
+    <meta name="theme-color" content="#1f2d24">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Serene Sleep">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#1f2d24">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <link rel="mask-icon" href="icons/icon.svg" color="#4a8c5c">
+    
     <style>
         :root {
             /* Color palette inspired by nature and calm */
@@ -23,24 +45,61 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent; /* Disable blue tap highlight on mobile */
+            -webkit-tap-highlight-color: transparent;
         }
 
         html, body {
-            height: 100%; /* Ensure body takes full height */
-            overflow: hidden; /* Prevent scrolling, especially on mobile */
+            height: 100%;
+            overflow: hidden;
         }
 
         body {
             background: linear-gradient(to bottom, hsl(var(--primary-hue), 20%, 10%), hsl(var(--primary-hue), 25%, 20%));
             color: var(--light-color);
-            min-height: 100vh; /* Use min-height for flexibility */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Center vertically */
+            justify-content: center;
             padding: var(--mobile-padding);
             transition: background 1s ease;
+        }
+
+        /* PWA Install Banner */
+        .install-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 15px hsla(0, 0%, 0%, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .install-banner.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .install-banner:hover {
+            background: var(--primary-color);
+        }
+
+        .install-banner .close-btn {
+            margin-left: 8px;
+            opacity: 0.7;
+            font-size: 18px;
         }
 
         .container {
@@ -48,36 +107,74 @@
             max-width: 500px;
             background-color: hsla(var(--primary-hue), 20%, 15%, 0.85);
             border-radius: 20px;
-            padding: 25px var(--mobile-padding); /* Mobile padding first */
-            box-shadow: 0 10px 30px hsla(0, 0%, 0%, 0.4); /* Slightly softer shadow */
+            padding: 25px var(--mobile-padding);
+            box-shadow: 0 10px 30px hsla(0, 0%, 0%, 0.4);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px); /* Safari */
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid hsla(var(--primary-hue), 25%, 30%, 0.5);
             transition: background-color 1s ease, padding 0.3s ease;
-            overflow-y: auto; /* Allow scrolling within container if needed on small heights */
-            max-height: calc(100vh - 2 * var(--mobile-padding)); /* Limit container height */
+            overflow-y: auto;
+            max-height: calc(100vh - 2 * var(--mobile-padding));
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 20px; /* Reduced margin */
             color: var(--accent-color);
             font-weight: 300;
-            font-size: 24px; /* Adjusted size */
+            font-size: 24px;
             letter-spacing: 1.5px;
+            flex: 1;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--light-color);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            transition: var(--transition);
+            opacity: 0.6;
+        }
+
+        .icon-btn:hover, .icon-btn.active {
+            opacity: 1;
+            background: hsla(var(--primary-hue), 25%, 30%, 0.5);
+        }
+
+        .icon-btn.active {
+            color: var(--secondary-color);
         }
 
         .visualization {
             width: 100%;
-            /* Aspect ratio approach for height */
-            aspect-ratio: 16 / 8; /* Adjust ratio as needed */
-            max-height: 200px; /* Max height constraint */
+            aspect-ratio: 16 / 8;
+            max-height: 200px;
             border-radius: 15px;
-            margin-bottom: 25px; /* Adjusted margin */
+            margin-bottom: 25px;
             overflow: hidden;
             position: relative;
             background: transparent;
             border: 1px solid hsla(var(--primary-hue), 25%, 30%, 0.3);
+            transition: opacity 0.5s ease, filter 0.5s ease;
+        }
+
+        .visualization.focus-mode {
+            opacity: 0.3;
+            filter: blur(2px);
         }
 
         canvas {
@@ -92,14 +189,14 @@
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Adjusted gap */
+            gap: 20px;
         }
 
         .control-section-label {
-            font-size: 13px; /* Smaller label */
+            font-size: 13px;
             color: var(--light-color);
             opacity: 0.6;
-            margin-bottom: -10px; /* Pull closer to controls */
+            margin-bottom: -10px;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -107,21 +204,21 @@
 
         .sound-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); /* Flexible grid */
-            gap: 8px; /* Reduced gap */
+            grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+            gap: 8px;
         }
 
         .sound-options .btn, .timer-presets .timer-btn {
-            font-size: 12px; /* Further reduced size */
-            padding: 9px 5px; /* Adjusted padding */
+            font-size: 12px;
+            padding: 9px 5px;
             background-color: hsla(var(--primary-hue), 25%, 30%, 0.5);
             color: var(--light-color);
             border: 1px solid transparent;
-            border-radius: 8px; /* Slightly less rounded */
+            border-radius: 8px;
             transition: var(--transition);
             cursor: pointer;
             text-align: center;
-            white-space: nowrap; /* Prevent wrapping */
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -134,7 +231,7 @@
         .sound-options .btn.active, .timer-presets .timer-btn.active {
             background-color: var(--secondary-color);
             color: var(--dark-color);
-            font-weight: 600; /* Bolder active state */
+            font-weight: 600;
             border-color: transparent;
             box-shadow: 0 1px 4px hsla(var(--primary-hue), 30%, 20%, 0.2);
         }
@@ -142,7 +239,7 @@
         .volume-control {
             display: flex;
             align-items: center;
-            gap: 12px; /* Reduced gap */
+            gap: 12px;
         }
 
         .volume-icon {
@@ -151,7 +248,17 @@
             width: 25px;
             text-align: center;
             opacity: 0.8;
-            flex-shrink: 0; /* Prevent icon shrinking */
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .volume-icon:hover {
+            opacity: 1;
+        }
+
+        .volume-icon.muted {
+            opacity: 0.4;
         }
 
         .slider {
@@ -184,7 +291,7 @@
 
         .slider::-webkit-slider-thumb:hover {
             background: var(--primary-color);
-            transform: scale(1.15); /* Slightly larger hover */
+            transform: scale(1.15);
         }
 
         .slider::-moz-range-thumb {
@@ -206,21 +313,21 @@
         .main-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px; /* Reduced gap */
-            margin-top: 5px; /* Reduced margin */
+            gap: 15px;
+            margin-top: 5px;
         }
 
         .main-btn {
             background-color: var(--secondary-color);
             color: var(--dark-color);
             border: none;
-            padding: 12px 30px; /* Adjusted padding */
+            padding: 12px 30px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 16px; /* Adjusted size */
+            font-size: 16px;
             font-weight: 500;
             transition: var(--transition);
-            min-width: 100px; /* Adjusted min-width */
+            min-width: 100px;
             text-align: center;
             box-shadow: 0 3px 8px hsla(var(--primary-hue), 30%, 20%, 0.3);
         }
@@ -238,7 +345,7 @@
         }
 
         .main-btn.active:not(:disabled) {
-            transform: translateY(1px); /* Press effect */
+            transform: translateY(1px);
             box-shadow: inset 0 2px 4px hsla(0, 0%, 0%, 0.15);
         }
 
@@ -247,53 +354,112 @@
              color: var(--primary-color);
         }
          .main-btn#stopBtn.active:not(:disabled) {
-             background-color: hsl(0, 40%, 60%); /* Subtle red hint for stop */
+             background-color: hsl(0, 40%, 60%);
              color: var(--accent-color);
          }
 
 
         .timer-section {
-            margin-top: 10px; /* Adjusted margin */
+            margin-top: 10px;
         }
 
         .timer-presets {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Four columns */
-            gap: 8px; /* Reduced gap */
-            margin-top: 5px; /* Reduced margin */
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        /* Custom Timer Input */
+        .custom-timer-btn {
+            position: relative;
+        }
+
+        .custom-timer-btn input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            color: var(--light-color);
+            text-align: center;
+            font-size: 12px;
+            border-radius: 8px;
+            padding: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .custom-timer-btn input:focus {
+            opacity: 1;
+            background: hsla(var(--primary-hue), 25%, 20%, 0.9);
+            outline: 2px solid var(--secondary-color);
+        }
+
+        .custom-timer-btn.has-value input {
+            opacity: 1;
+            background: var(--secondary-color);
+            color: var(--dark-color);
+            font-weight: 600;
         }
 
         .timer-display {
             text-align: center;
-            font-size: 18px; /* Adjusted size */
-            margin-top: 15px; /* Adjusted margin */
+            font-size: 18px;
+            margin-top: 15px;
             color: var(--accent-color);
             font-weight: 300;
             letter-spacing: 1px;
-            height: 25px; /* Adjusted height */
-            opacity: 0; /* Start hidden */
+            height: 25px;
+            opacity: 0;
             transition: opacity 0.5s ease;
-            line-height: 25px; /* Match height */
+            line-height: 25px;
         }
 
         .timer-display.visible {
-             opacity: 0.8; /* Fade in when active */
+             opacity: 0.8;
         }
 
+        /* Status indicators */
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 11px;
+            opacity: 0.5;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-item.active {
+            opacity: 1;
+            color: var(--secondary-color);
+        }
 
         footer {
-             /* Removed fixed positioning for better flow */
-            padding: 15px 0 5px 0; /* Add padding */
+            padding: 15px 0 5px 0;
             text-align: center;
             font-size: 12px;
             color: hsla(var(--primary-hue), 25%, 85%, 0.5);
             width: 100%;
         }
 
+        .keyboard-hint {
+            font-size: 10px;
+            opacity: 0.4;
+            margin-top: 5px;
+        }
+
         /* --- Responsive Adjustments --- */
         @media (min-width: 600px) {
              body {
-                 padding: 20px; /* More padding on larger screens */
+                 padding: 20px;
              }
              .container {
                 padding: 30px var(--desktop-padding);
@@ -301,10 +467,12 @@
              }
              h1 {
                  font-size: 28px;
+             }
+             .header {
                  margin-bottom: 30px;
              }
              .visualization {
-                 aspect-ratio: 16 / 7; /* Adjust aspect ratio */
+                 aspect-ratio: 16 / 7;
                  max-height: 220px;
                  margin-bottom: 30px;
              }
@@ -351,14 +519,37 @@
               footer {
                  font-size: 13px;
              }
+             .keyboard-hint {
+                 display: block;
+             }
+        }
+
+        @media (max-width: 599px) {
+            .keyboard-hint {
+                display: none;
+            }
         }
 
     </style>
 </head>
 <body>
+    <!-- PWA Install Banner -->
+    <div class="install-banner" id="installBanner">
+        <span>📲</span>
+        <span>Install Serene Sleep</span>
+        <span class="close-btn" id="closeInstall">×</span>
+    </div>
+
     <div class="container">
-        <h1>Serene Sleep</h1>
-        <div class="visualization">
+        <div class="header">
+            <div style="width: 60px;"></div>
+            <h1>Serene Sleep</h1>
+            <div class="header-actions">
+                <button class="icon-btn" id="focusBtn" title="Focus Mode (F)" aria-label="Toggle focus mode">👁</button>
+                <button class="icon-btn" id="wakeLockBtn" title="Keep Screen On (K)" aria-label="Toggle screen wake lock">💡</button>
+            </div>
+        </div>
+        <div class="visualization" id="visualizationContainer">
             <canvas id="visualizer"></canvas>
         </div>
         <div class="controls">
@@ -373,7 +564,7 @@
             </div>
 
             <div class="volume-control">
-                <div class="volume-icon">🔊</div>
+                <div class="volume-icon" id="volumeIcon" title="Toggle Mute (M)">🔊</div>
                 <input type="range" min="0" max="1" step="0.01" value="0.4" class="slider" id="volume" aria-label="Volume">
             </div>
 
@@ -388,15 +579,33 @@
                     <button class="timer-btn" data-time="15">15 min</button>
                     <button class="timer-btn" data-time="30">30 min</button>
                     <button class="timer-btn" data-time="90">90 min</button>
-                    <button class="timer-btn" data-time="180">3 hours</button>
+                    <button class="timer-btn" data-time="180">3 hrs</button>
+                    <div class="timer-btn custom-timer-btn" data-time="custom">
+                        <span id="customTimerLabel">Custom</span>
+                        <input type="number" id="customTimerInput" min="1" max="480" placeholder="min" aria-label="Custom timer minutes">
+                    </div>
                 </div>
                 <div class="timer-display" id="timerDisplay"></div>
             </div>
+
+            <div class="status-bar">
+                <div class="status-item" id="offlineStatus">
+                    <span>📴</span>
+                    <span>Offline Ready</span>
+                </div>
+                <div class="status-item" id="wakeLockStatus">
+                    <span>💡</span>
+                    <span>Screen On</span>
+                </div>
+            </div>
+
              <footer>
                 <p>Mindful Green Noise • Drift into tranquility</p>
+                <p class="keyboard-hint">Space: Play/Pause • M: Mute • 1-6: Sounds • F: Focus</p>
+                <p style="margin-top: 8px; opacity: 0.4;">Made by Abhiram NJ</p>
             </footer>
-        </div> <!-- .controls end -->
-    </div> <!-- .container end -->
+        </div>
+    </div>
 
 
     <script>
@@ -404,37 +613,198 @@
             // --- Configuration ---
             const PARTICLE_COUNT_FACTOR = 25;
             const BREATH_SPEED = 0.004;
-            const FADE_OUT_DURATION = 8; // Faster fade out
+            const FADE_OUT_DURATION = 8;
+            const STORAGE_KEY = 'serene-sleep-prefs';
 
             // --- State Variables ---
             let audioContext = null;
             let noiseNode = null;
             let gainNode = null;
-            let analyser = null; // Keep analyser setup if needed later
+            let analyser = null;
             let isPlaying = false;
-            let isStopping = false; // Flag to prevent rapid stop/start issues
+            let isStopping = false;
             let timerTimeoutId = null;
             let remainingTime = 0;
             let timerIntervalId = null;
             let currentSound = 'forest';
             let targetHue = 120;
             let currentHue = 120;
-            let breathCycle = Math.random() * Math.PI * 2; // Start breath at random phase
+            let breathCycle = Math.random() * Math.PI * 2;
             let particles = [];
             let animationFrameId = null;
-            let firstInteraction = false; // Track first user interaction for audio context
+            let firstInteraction = false;
+            let focusMode = false;
+            let wakeLock = null;
+            let isMuted = false;
+            let lastVolume = 0.4;
+            let deferredPrompt = null;
 
             // --- DOM Elements ---
             const canvas = document.getElementById('visualizer');
             const canvasContext = canvas.getContext('2d');
             const volumeSlider = document.getElementById('volume');
+            const volumeIcon = document.getElementById('volumeIcon');
             const playBtn = document.getElementById('playBtn');
             const stopBtn = document.getElementById('stopBtn');
             const timerDisplay = document.getElementById('timerDisplay');
             const soundOptionBtns = document.querySelectorAll('.sound-options .btn');
-            const timerPresetBtns = document.querySelectorAll('.timer-presets .timer-btn');
+            const timerPresetBtns = document.querySelectorAll('.timer-presets .timer-btn:not(.custom-timer-btn)');
+            const customTimerBtn = document.querySelector('.custom-timer-btn');
+            const customTimerInput = document.getElementById('customTimerInput');
+            const customTimerLabel = document.getElementById('customTimerLabel');
             const bodyElement = document.body;
             const containerElement = document.querySelector('.container');
+            const visualizationContainer = document.getElementById('visualizationContainer');
+            const focusBtn = document.getElementById('focusBtn');
+            const wakeLockBtn = document.getElementById('wakeLockBtn');
+            const wakeLockStatus = document.getElementById('wakeLockStatus');
+            const offlineStatus = document.getElementById('offlineStatus');
+            const installBanner = document.getElementById('installBanner');
+            const closeInstall = document.getElementById('closeInstall');
+
+            // --- localStorage Preferences ---
+            function loadPreferences() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const prefs = JSON.parse(saved);
+                        
+                        if (prefs.sound) {
+                            currentSound = prefs.sound;
+                            soundOptionBtns.forEach(btn => {
+                                if (btn.dataset.sound === currentSound) {
+                                    btn.classList.add('active');
+                                    targetHue = parseInt(btn.dataset.hue, 10);
+                                    currentHue = targetHue;
+                                } else {
+                                    btn.classList.remove('active');
+                                }
+                            });
+                        }
+                        
+                        if (prefs.volume !== undefined) {
+                            volumeSlider.value = prefs.volume;
+                            lastVolume = prefs.volume;
+                        }
+                        
+                        if (prefs.focusMode) {
+                            focusMode = true;
+                            visualizationContainer.classList.add('focus-mode');
+                            focusBtn.classList.add('active');
+                        }
+                        
+                        console.log('Preferences loaded:', prefs);
+                    }
+                } catch (e) {
+                    console.warn('Could not load preferences:', e);
+                }
+            }
+
+            function savePreferences() {
+                try {
+                    const prefs = {
+                        sound: currentSound,
+                        volume: parseFloat(volumeSlider.value),
+                        focusMode: focusMode
+                    };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+                } catch (e) {
+                    console.warn('Could not save preferences:', e);
+                }
+            }
+
+            // --- PWA Install Handling ---
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                setTimeout(() => {
+                    installBanner.classList.add('visible');
+                }, 3000);
+            });
+
+            installBanner.addEventListener('click', async (e) => {
+                if (e.target === closeInstall) {
+                    installBanner.classList.remove('visible');
+                    return;
+                }
+                
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log('Install prompt outcome:', outcome);
+                    deferredPrompt = null;
+                    installBanner.classList.remove('visible');
+                }
+            });
+
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA was installed');
+                installBanner.classList.remove('visible');
+                deferredPrompt = null;
+            });
+
+            // --- Service Worker Registration ---
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration.scope);
+                        offlineStatus.classList.add('active');
+                    })
+                    .catch((error) => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            }
+
+            // --- Screen Wake Lock ---
+            async function requestWakeLock() {
+                if ('wakeLock' in navigator) {
+                    try {
+                        wakeLock = await navigator.wakeLock.request('screen');
+                        wakeLockBtn.classList.add('active');
+                        wakeLockStatus.classList.add('active');
+                        console.log('Wake Lock active');
+                        
+                        wakeLock.addEventListener('release', () => {
+                            console.log('Wake Lock released');
+                            wakeLockBtn.classList.remove('active');
+                            wakeLockStatus.classList.remove('active');
+                        });
+                    } catch (err) {
+                        console.warn('Wake Lock error:', err);
+                    }
+                }
+            }
+
+            async function releaseWakeLock() {
+                if (wakeLock) {
+                    await wakeLock.release();
+                    wakeLock = null;
+                }
+            }
+
+            wakeLockBtn.addEventListener('click', async () => {
+                if (wakeLock) {
+                    await releaseWakeLock();
+                } else {
+                    await requestWakeLock();
+                }
+            });
+
+            document.addEventListener('visibilitychange', async () => {
+                if (wakeLock !== null && document.visibilityState === 'visible') {
+                    await requestWakeLock();
+                }
+            });
+
+            // --- Focus Mode ---
+            function toggleFocusMode() {
+                focusMode = !focusMode;
+                visualizationContainer.classList.toggle('focus-mode', focusMode);
+                focusBtn.classList.toggle('active', focusMode);
+                savePreferences();
+            }
+
+            focusBtn.addEventListener('click', toggleFocusMode);
 
             // --- Canvas & Particle Setup ---
             let width, height;
@@ -446,7 +816,6 @@
                     canvas.width = width;
                     canvas.height = height;
                 }
-                // Only create particles if width/height are valid
                 if (width > 0 && height > 0) {
                      createParticles();
                 }
@@ -454,7 +823,7 @@
 
             function createParticles() {
                 particles = [];
-                if (!width || !height) return; // Don't create if canvas size is 0
+                if (!width || !height) return;
                 const particleCount = Math.max(10, Math.floor(width / PARTICLE_COUNT_FACTOR));
                 for (let i = 0; i < particleCount; i++) {
                     particles.push({
@@ -476,7 +845,6 @@
                     try {
                         audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-                        // Check if context is suspended and resume if needed (especially on first interaction)
                         if (audioContext.state === 'suspended') {
                             await audioContext.resume();
                         }
@@ -488,15 +856,14 @@
                         analyser = audioContext.createAnalyser();
                         analyser.fftSize = 512;
                         analyser.smoothingTimeConstant = 0.9;
-                        // We connect the final sound node to analyser later
-                        analyser.connect(gainNode); // Connect analyser to gain for potential future use
+                        analyser.connect(gainNode);
 
                         console.log("AudioContext initialized successfully. State:", audioContext.state);
-                        firstInteraction = true; // Mark that interaction happened
+                        firstInteraction = true;
                     } catch (e) {
                         console.error("Error initializing AudioContext:", e);
                         alert("Could not initialize audio. Your browser might not support it or permissions are denied.");
-                        audioContext = null; // Ensure it's null if failed
+                        audioContext = null;
                     }
                 } else if (audioContext.state === 'suspended') {
                      try {
@@ -506,7 +873,7 @@
                          console.error("Error resuming AudioContext:", e);
                      }
                 }
-                 return audioContext !== null; // Return success status
+                 return audioContext !== null;
             }
 
             function createSoundNode(type) {
@@ -548,31 +915,29 @@
                 midPeak1.frequency.setValueAtTime(p1Freq, now); midPeak1.Q.setValueAtTime(p1Q, now); midPeak1.gain.setValueAtTime(p1Gain, now);
                 midPeak2.frequency.setValueAtTime(p2Freq, now); midPeak2.Q.setValueAtTime(p2Q, now); midPeak2.gain.setValueAtTime(p2Gain, now);
 
-                // Connect chain: source -> filters -> analyser -> gain -> destination
                 sourceNode.connect(lowShelf);
                 lowShelf.connect(highShelf);
                 highShelf.connect(midPeak1);
                 midPeak1.connect(midPeak2);
-                midPeak2.connect(analyser); // Connect final filter to analyser
+                midPeak2.connect(analyser);
 
-                return sourceNode; // Return only the source node, it's connected internally
+                return sourceNode;
             }
 
             async function playCurrentSound() {
-                 if (isPlaying || isStopping) return; // Prevent starting if already playing or currently stopping
+                 if (isPlaying || isStopping) return;
                  console.log("Attempting to play...");
 
-                 const audioReady = await initAudio(); // Ensure audio context is ready and resumed
+                 const audioReady = await initAudio();
                  if (!audioReady) {
                      console.error("Audio context not ready, cannot play.");
                      return;
                  }
 
-                 // Stop any previous node cleanly before creating a new one
                  if (noiseNode) {
                      try {
                          noiseNode.stop();
-                         noiseNode.disconnect(); // Disconnect all connections
+                         noiseNode.disconnect();
                      } catch (e) { console.warn("Error stopping previous node:", e); }
                      noiseNode = null;
                  }
@@ -585,32 +950,37 @@
                  }
 
                  try {
-                     gainNode.gain.cancelScheduledValues(audioContext.currentTime); // Cancel any pending fades
-                     gainNode.gain.setValueAtTime(volumeSlider.value, audioContext.currentTime); // Ensure volume is set
+                     gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+                     gainNode.gain.setValueAtTime(isMuted ? 0 : volumeSlider.value, audioContext.currentTime);
 
                      noiseNode.start();
                      isPlaying = true;
                      playBtn.classList.add('active');
                      stopBtn.classList.remove('active');
-                     playBtn.disabled = true; // Disable play while playing
+                     playBtn.disabled = true;
                      stopBtn.disabled = false;
                      startVisualization();
+                     
+                     if (!wakeLock && 'wakeLock' in navigator) {
+                         await requestWakeLock();
+                     }
+                     
                      console.log("Playback started.");
                  } catch (error) {
                      console.error("Error starting audio playback:", error);
-                     isPlaying = false; // Reset state on error
+                     isPlaying = false;
                      playBtn.disabled = false;
                      stopBtn.disabled = true;
                  }
             }
 
              function stopPlayback(fadeOut = false) {
-                 if (!isPlaying || isStopping) return; // Prevent stopping if not playing or already stopping
+                 if (!isPlaying || isStopping) return;
                  console.log(`Attempting to stop playback (fade: ${fadeOut})`);
-                 isStopping = true; // Set flag to prevent overlap
-                 stopBtn.disabled = true; // Disable stop during the process
+                 isStopping = true;
+                 stopBtn.disabled = true;
 
-                 clearTimer(false); // Clear timer logic, but don't update UI yet
+                 clearTimer(false);
 
                  if (fadeOut && gainNode && audioContext) {
                      const now = audioContext.currentTime;
@@ -619,13 +989,12 @@
                      gainNode.gain.setValueAtTime(currentVolume, now);
                      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + FADE_OUT_DURATION);
 
-                     // Use a timeout matching the fade duration to fully stop
                      setTimeout(() => {
                          finalizeStop();
                      }, FADE_OUT_DURATION * 1000);
 
                  } else {
-                     finalizeStop(); // Stop immediately
+                     finalizeStop();
                  }
              }
 
@@ -638,28 +1007,48 @@
                      } catch (e) { console.warn("Error stopping node:", e); }
                      noiseNode = null;
                  }
-                  // Reset gain immediately AFTER stopping the node
                   if (gainNode && audioContext) {
                       gainNode.gain.cancelScheduledValues(audioContext.currentTime);
-                      gainNode.gain.setValueAtTime(volumeSlider.value, audioContext.currentTime);
+                      gainNode.gain.setValueAtTime(isMuted ? 0 : volumeSlider.value, audioContext.currentTime);
                   }
 
                  isPlaying = false;
-                 isStopping = false; // Reset stopping flag
+                 isStopping = false;
                  stopVisualization();
                  playBtn.classList.remove('active');
                  stopBtn.classList.add('active');
-                 playBtn.disabled = false; // Re-enable play
-                 stopBtn.disabled = true; // Disable stop
-                 clearTimerDisplayAndButtons(); // Update timer UI now
+                 playBtn.disabled = false;
+                 stopBtn.disabled = true;
+                 clearTimerDisplayAndButtons();
                  console.log("Playback stopped.");
              }
 
+            // --- Mute Toggle ---
+            function toggleMute() {
+                isMuted = !isMuted;
+                if (isMuted) {
+                    lastVolume = volumeSlider.value;
+                    volumeIcon.textContent = '🔇';
+                    volumeIcon.classList.add('muted');
+                    if (gainNode && audioContext) {
+                        gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
+                    }
+                } else {
+                    volumeIcon.textContent = '🔊';
+                    volumeIcon.classList.remove('muted');
+                    if (gainNode && audioContext) {
+                        gainNode.gain.setTargetAtTime(lastVolume, audioContext.currentTime, 0.015);
+                    }
+                }
+            }
+
+            volumeIcon.addEventListener('click', toggleMute);
+
             // --- Visualization ---
             function startVisualization() {
-                if (animationFrameId) cancelAnimationFrame(animationFrameId); // Ensure no duplicates
-                resizeCanvas(); // Ensure dimensions are correct before first draw
-                if (width > 0 && height > 0) { // Only start if canvas has size
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                resizeCanvas();
+                if (width > 0 && height > 0) {
                      console.log("Starting visualization...");
                      animationFrameId = requestAnimationFrame(visualize);
                 } else {
@@ -672,7 +1061,6 @@
                      cancelAnimationFrame(animationFrameId);
                      animationFrameId = null;
                      console.log("Visualization stopped.");
-                     // Optional: Clear canvas with a fade effect
                      if (canvasContext && width > 0 && height > 0) {
                         canvasContext.fillStyle = `hsla(${currentHue}, 20%, 15%, 0.5)`;
                         canvasContext.fillRect(0, 0, width, height);
@@ -682,19 +1070,15 @@
 
 
             function visualize() {
-                // Important: Request next frame *early* in the function
                 animationFrameId = requestAnimationFrame(visualize);
 
-                if (!width || !height) return; // Skip drawing if canvas has no size
+                if (!width || !height) return;
 
-                // Smoothly transition the current drawing hue towards the target hue
                 currentHue += (targetHue - currentHue) * 0.05;
 
-                // Update body/container background HSL based on currentHue
                 bodyElement.style.setProperty('--primary-hue', Math.round(currentHue));
                 containerElement.style.setProperty('--primary-hue', Math.round(currentHue));
 
-                // Clear canvas with a soft radial gradient background
                 const gradient = canvasContext.createRadialGradient(
                     width / 2, height / 2, 0,
                     width / 2, height / 2, Math.max(width, height) * 0.7
@@ -704,18 +1088,15 @@
                 canvasContext.fillStyle = gradient;
                 canvasContext.fillRect(0, 0, width, height);
 
-                // Update Breathing Cycle
                 breathCycle += BREATH_SPEED;
-                breathProgress = (Math.sin(breathCycle) + 1) / 2; // 0 to 1 oscillation
+                breathProgress = (Math.sin(breathCycle) + 1) / 2;
 
-                // Draw Central Breathing Element
                 const centerX = width / 2;
                 const centerY = height / 2;
                 const baseRadius = Math.min(width, height) * 0.1;
                 const breathAmplitude = Math.min(width, height) * 0.08;
                 const currentRadius = baseRadius + breathProgress * breathAmplitude;
 
-                // Outer Glow
                 const glowRadius = currentRadius * 2.5;
                 const glowGradient = canvasContext.createRadialGradient(
                     centerX, centerY, currentRadius * 0.5,
@@ -729,18 +1110,15 @@
                 canvasContext.fillStyle = glowGradient;
                 canvasContext.fill();
 
-                // Update and Draw Particles
                 for (let i = 0; i < particles.length; i++) {
                     const p = particles[i];
 
-                    // Update position
                     p.x += p.speedX;
                     p.y += p.speedY;
                     const angle = p.phase + breathCycle * 0.1;
                     p.x += Math.cos(angle) * 0.05;
                     p.y += Math.sin(angle) * 0.05;
 
-                    // Gentle push/pull
                     const dx = p.x - centerX;
                     const dy = p.y - centerY;
                     const dist = Math.sqrt(dx * dx + dy * dy) + 0.1;
@@ -748,17 +1126,14 @@
                     p.x += (dx / dist) * pushPullFactor;
                     p.y += (dy / dist) * pushPullFactor;
 
-                    // Wrap around edges
                     if (p.x < -p.size) p.x = width + p.size;
                     if (p.x > width + p.size) p.x = -p.size;
                     if (p.y < -p.size) p.y = height + p.size;
                     if (p.y > height + p.size) p.y = -p.size;
 
-                    // Calculate particle appearance
                     const particleHue = (currentHue + p.hueOffset + 180) % 360;
                     const particleOpacity = p.opacity * (0.5 + breathProgress * 0.5);
 
-                    // Draw particle
                     canvasContext.beginPath();
                     canvasContext.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     const particleGradient = canvasContext.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 1.5);
@@ -772,17 +1147,17 @@
 
             // --- Timer Logic ---
             function startTimer(minutes) {
-                clearTimer(false); // Clear previous timers without UI update yet
+                clearTimer(false);
 
                 remainingTime = minutes * 60;
-                updateTimerDisplay(); // Show initial time and make visible
+                updateTimerDisplay();
                 timerDisplay.classList.add('visible');
 
                 timerIntervalId = setInterval(updateTimerDisplay, 1000);
 
                 timerTimeoutId = setTimeout(() => {
                     console.log("Timer finished.");
-                    stopPlayback(true); // Fade out when timer ends
+                    stopPlayback(true);
                 }, minutes * 60 * 1000);
                  console.log(`Timer started for ${minutes} minutes.`);
             }
@@ -803,11 +1178,15 @@
                   timerDisplay.textContent = '';
                   timerDisplay.classList.remove('visible');
                   timerPresetBtns.forEach(btn => btn.classList.remove('active'));
+                  customTimerBtn.classList.remove('active');
+                  customTimerBtn.classList.remove('has-value');
+                  customTimerInput.value = '';
+                  customTimerLabel.textContent = 'Custom';
              }
 
             function updateTimerDisplay() {
                 if (remainingTime <= 0) {
-                    clearTimer(); // This will also clear interval and timeout
+                    clearTimer();
                     return;
                 }
 
@@ -823,21 +1202,62 @@
                 remainingTime--;
             }
 
+            // --- Custom Timer ---
+            customTimerInput.addEventListener('focus', () => {
+                customTimerLabel.style.opacity = '0';
+            });
+
+            customTimerInput.addEventListener('blur', () => {
+                if (!customTimerInput.value) {
+                    customTimerLabel.style.opacity = '1';
+                }
+            });
+
+            customTimerInput.addEventListener('change', async function() {
+                const minutes = parseInt(this.value);
+                if (!isNaN(minutes) && minutes > 0 && minutes <= 480) {
+                    timerPresetBtns.forEach(btn => btn.classList.remove('active'));
+                    customTimerBtn.classList.add('active');
+                    customTimerBtn.classList.add('has-value');
+                    customTimerLabel.textContent = `${minutes}m`;
+
+                    if (!audioContext) {
+                        const success = await initAudio();
+                        if (!success) return;
+                    }
+
+                    if (!isPlaying) {
+                        await playCurrentSound();
+                    }
+                    
+                    if (isPlaying) {
+                        startTimer(minutes);
+                    }
+                }
+            });
+
+            customTimerInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    customTimerInput.blur();
+                    const event = new Event('change');
+                    customTimerInput.dispatchEvent(event);
+                }
+            });
+
             // --- Event Listeners ---
             soundOptionBtns.forEach(button => {
                 button.addEventListener('click', async function() {
-                     if (isStopping) return; // Prevent changes while stopping
+                     if (isStopping) return;
 
-                     // If audio context doesn't exist yet, init it on first sound click
                      if (!audioContext) {
                          const success = await initAudio();
-                         if (!success) return; // Stop if audio init failed
+                         if (!success) return;
                      }
 
                      const selectedSound = this.dataset.sound;
                      const selectedHue = parseInt(this.dataset.hue, 10);
 
-                     if (currentSound === selectedSound && isPlaying) return; // Do nothing if clicking the active playing sound
+                     if (currentSound === selectedSound && isPlaying) return;
 
                      console.log(`Sound selected: ${selectedSound}`);
 
@@ -846,68 +1266,114 @@
 
                      soundOptionBtns.forEach(btn => btn.classList.remove('active'));
                      this.classList.add('active');
+                     
+                     savePreferences();
 
-                     // Always play the newly selected sound
                      if (isPlaying) {
-                        stopPlayback(false); // Stop current immediately
-                        // Use a small delay to ensure the stop completes before starting new sound
+                        stopPlayback(false);
                          setTimeout(playCurrentSound, 50);
                      } else {
-                         playCurrentSound(); // Start playing if wasn't already
+                         playCurrentSound();
                      }
                 });
             });
 
             playBtn.addEventListener('click', playCurrentSound);
-            stopBtn.addEventListener('click', () => stopPlayback(false)); // Immediate stop
+            stopBtn.addEventListener('click', () => stopPlayback(false));
 
             volumeSlider.addEventListener('input', function() {
-                if (gainNode && audioContext) {
-                    gainNode.gain.setTargetAtTime(this.value, audioContext.currentTime, 0.015); // Smooth volume change
+                if (isMuted) {
+                    isMuted = false;
+                    volumeIcon.textContent = '🔊';
+                    volumeIcon.classList.remove('muted');
                 }
+                lastVolume = this.value;
+                if (gainNode && audioContext) {
+                    gainNode.gain.setTargetAtTime(this.value, audioContext.currentTime, 0.015);
+                }
+                savePreferences();
             });
 
             timerPresetBtns.forEach(button => {
                 button.addEventListener('click', async function() {
-                    if (isStopping) return; // Prevent changes while stopping
+                    if (isStopping) return;
 
                     const minutes = parseInt(this.dataset.time);
                     if (!isNaN(minutes)) {
                         timerPresetBtns.forEach(btn => btn.classList.remove('active'));
+                        customTimerBtn.classList.remove('active');
+                        customTimerBtn.classList.remove('has-value');
+                        customTimerInput.value = '';
+                        customTimerLabel.textContent = 'Custom';
                         this.classList.add('active');
 
-                         // If audio context doesn't exist yet, init it on first timer click
                         if (!audioContext) {
                              const success = await initAudio();
-                             if (!success) return; // Stop if audio init failed
+                             if (!success) return;
                          }
 
-                        // Start playing if not already, then set timer
                         if (!isPlaying) {
-                            await playCurrentSound(); // Ensure playback starts before timer
+                            await playCurrentSound();
                         }
-                         // Only start timer if playback is actually running or just started successfully
                         if (isPlaying) {
                              startTimer(minutes);
                         } else {
                             console.warn("Playback did not start, timer not set.");
-                            clearTimerDisplayAndButtons(); // Ensure timer UI is cleared if play failed
+                            clearTimerDisplayAndButtons();
                         }
                     }
                 });
             });
 
-             // Handle visibility change
+            // --- Keyboard Shortcuts ---
+            document.addEventListener('keydown', async (e) => {
+                if (e.target.tagName === 'INPUT') return;
+
+                switch(e.key.toLowerCase()) {
+                    case ' ':
+                        e.preventDefault();
+                        if (isPlaying) {
+                            stopPlayback(false);
+                        } else {
+                            playCurrentSound();
+                        }
+                        break;
+                    case 'm':
+                        toggleMute();
+                        break;
+                    case 'f':
+                        toggleFocusMode();
+                        break;
+                    case 'k':
+                        if (wakeLock) {
+                            await releaseWakeLock();
+                        } else {
+                            await requestWakeLock();
+                        }
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                        const index = parseInt(e.key) - 1;
+                        if (soundOptionBtns[index]) {
+                            soundOptionBtns[index].click();
+                        }
+                        break;
+                }
+            });
+
+             // Handle visibility change for visualization
              document.addEventListener('visibilitychange', () => {
                  if (document.hidden) {
-                     // Pause animation when tab is hidden
                      if (animationFrameId) {
                          cancelAnimationFrame(animationFrameId);
                          animationFrameId = null;
                          console.log("Visualization paused due to tab hidden.");
                      }
                  } else {
-                     // Resume animation only if playing and animation was stopped
                      if (isPlaying && !animationFrameId) {
                          startVisualization();
                          console.log("Visualization resumed due to tab visible.");
@@ -922,34 +1388,32 @@
                  resizeTimeout = setTimeout(() => {
                       console.log("Window resized");
                       resizeCanvas();
-                       // If playing, restart visualization to adapt to new size
                       if (isPlaying && animationFrameId) {
-                           cancelAnimationFrame(animationFrameId); // Stop old loop
+                           cancelAnimationFrame(animationFrameId);
                            animationFrameId = null;
                       }
                        if (isPlaying && !animationFrameId) {
-                          startVisualization(); // Start new loop with correct dimensions
+                          startVisualization();
                        }
-                 }, 250); // Debounce resize event
+                 }, 250);
              });
 
 
             // --- Initial Setup ---
-            resizeCanvas(); // Initial canvas sizing
-            stopBtn.disabled = true; // Start with stop disabled
+            loadPreferences();
+            resizeCanvas();
+            stopBtn.disabled = true;
             playBtn.disabled = false;
-            stopBtn.classList.add('active'); // Start with stop visually active
+            stopBtn.classList.add('active');
 
-             // Add a listener to init audio on *any* first click/touch for mobile compatibility
              function handleFirstInteraction() {
                 if (!firstInteraction) {
                     console.log("First user interaction detected.");
                     initAudio().then(success => {
                         if (success) {
-                             // Maybe enable play button explicitly here if needed
+                             // Audio ready
                         }
                      });
-                     // Remove this listener after first interaction
                      document.removeEventListener('click', handleFirstInteraction, true);
                      document.removeEventListener('touchstart', handleFirstInteraction, true);
                  }
@@ -958,9 +1422,9 @@
              document.addEventListener('touchstart', handleFirstInteraction, true);
 
 
-            console.log("Green Noise App Initialized.");
+            console.log("Serene Sleep PWA Initialized.");
 
-        }); // End DOMContentLoaded
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+{
+  "name": "Serene Sleep - Mindful Green Noise",
+  "short_name": "Serene Sleep",
+  "description": "A minimalist green noise generator for sleep, relaxation, and focus. Choose from soothing ambiances like Forest Stream, Gentle Rain, and more.",
+  "id": "com.abhiramnj.serenessleep",
+  "author": "Abhiram NJ",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1a2b1f",
+  "theme_color": "#1f2d24",
+  "orientation": "portrait-primary",
+  "categories": ["health", "lifestyle", "utilities"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

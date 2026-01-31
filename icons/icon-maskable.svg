@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2b1f"/>
+      <stop offset="100%" style="stop-color:#2a3d2f"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#7ab88a;stop-opacity:0.8"/>
+      <stop offset="60%" style="stop-color:#4a8c5c;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:#1f2d24;stop-opacity:0"/>
+    </radialGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7ab88a"/>
+      <stop offset="100%" style="stop-color:#4a8c5c"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background - full square for maskable -->
+  <rect width="512" height="512" fill="url(#bgGrad)"/>
+  
+  <!-- Outer glow - centered in safe zone -->
+  <circle cx="256" cy="256" r="140" fill="url(#glowGrad)"/>
+  
+  <!-- Central breathing circle -->
+  <circle cx="256" cy="256" r="70" fill="none" stroke="url(#leafGrad)" stroke-width="5" opacity="0.6"/>
+  <circle cx="256" cy="256" r="55" fill="none" stroke="url(#leafGrad)" stroke-width="3" opacity="0.4"/>
+  
+  <!-- Stylized leaf/wave symbol - scaled down to fit safe zone -->
+  <g transform="translate(256, 256) scale(0.8)">
+    <!-- Main leaf shape -->
+    <path d="M0,-60 Q40,-30 40,20 Q30,50 0,60 Q-30,50 -40,20 Q-40,-30 0,-60 Z" 
+          fill="url(#leafGrad)" opacity="0.9"/>
+    <!-- Center vein -->
+    <path d="M0,-50 Q0,0 0,50" 
+          fill="none" stroke="#1f2d24" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+    <!-- Side veins -->
+    <path d="M0,-30 Q15,-20 25,-10" 
+          fill="none" stroke="#1f2d24" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M0,-30 Q-15,-20 -25,-10" 
+          fill="none" stroke="#1f2d24" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M0,0 Q15,10 25,20" 
+          fill="none" stroke="#1f2d24" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M0,0 Q-15,10 -25,20" 
+          fill="none" stroke="#1f2d24" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  </g>
+  
+  <!-- Fewer particles, kept in safe zone -->
+  <circle cx="180" cy="180" r="5" fill="#7ab88a" opacity="0.5"/>
+  <circle cx="340" cy="170" r="4" fill="#7ab88a" opacity="0.4"/>
+  <circle cx="170" cy="330" r="4" fill="#7ab88a" opacity="0.45"/>
+  <circle cx="350" cy="340" r="5" fill="#7ab88a" opacity="0.35"/>
+</svg>
