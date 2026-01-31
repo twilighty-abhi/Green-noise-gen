@@ -52,6 +52,20 @@
             --glow: var(--sleep-glow);
         }
         
+        /* Light Theme */
+        [data-theme="light"] {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --text: #1a1a24;
+            --text-muted: #6b6b7e;
+            --border: rgba(0, 0, 0, 0.08);
+            --glow: rgba(245, 158, 11, 0.1);
+        }
+        
+        [data-theme="light"][data-mode="sleep"] {
+            --glow: rgba(99, 102, 241, 0.1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -781,6 +795,379 @@
             cursor: pointer;
             padding: 4px;
         }
+        
+        /* Analytics Section */
+        .analytics-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .analytics-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .analytics-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .analytics-title svg {
+            width: 20px;
+            height: 20px;
+            color: var(--primary);
+        }
+        
+        .export-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .export-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+        }
+        
+        .export-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .streak-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        
+        .streak-indicator svg {
+            width: 16px;
+            height: 16px;
+            color: #f59e0b;
+        }
+        
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+        }
+        
+        .history-item-content {
+            flex: 1;
+        }
+        
+        .history-sound {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 2px;
+        }
+        
+        .history-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .history-duration {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--primary);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            opacity: 0.3;
+        }
+        
+        /* Favorites Bar */
+        .favorites-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .favorites-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 4px;
+        }
+        
+        .favorites-label svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .favorites-list {
+            display: flex;
+            gap: 6px;
+            flex: 1;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .favorites-list::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .favorite-chip {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .favorite-chip:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+        }
+        
+        .favorite-chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #000;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+            width: 44px;
+            height: 44px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .theme-toggle:hover svg {
+            color: #000;
+        }
+        
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+        
+        .theme-toggle .moon-icon,
+        [data-theme="light"] .theme-toggle .sun-icon {
+            display: none;
+        }
+        
+        [data-theme="light"] .theme-toggle .moon-icon {
+            display: block;
+        }
+        
+        /* Breathing Mode Overlay */
+        .breathing-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 150;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .breathing-overlay.active {
+            display: flex;
+        }
+        
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), var(--secondary));
+            opacity: 0.3;
+            transition: all 4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 80px var(--glow);
+        }
+        
+        .breathing-circle.inhale {
+            transform: scale(1.5);
+            opacity: 0.8;
+        }
+        
+        .breathing-circle.hold {
+            transform: scale(1.5);
+            opacity: 0.8;
+        }
+        
+        .breathing-circle.exhale {
+            transform: scale(1);
+            opacity: 0.3;
+        }
+        
+        .breathing-text {
+            margin-top: 40px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+        
+        .breathing-count {
+            margin-top: 12px;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        
+        .breathing-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .breathing-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .breathing-close svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text);
+        }
+        
+        /* Breathing Mode Button */
+        .breathing-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 50;
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px var(--glow);
+        }
+        
+        .breathing-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px var(--glow);
+        }
+        
+        .breathing-btn svg {
+            width: 24px;
+            height: 24px;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -791,6 +1178,24 @@
 
     <!-- Background -->
     <div class="bg-gradient"></div>
+    
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+    </button>
+    
+    <!-- Breathing Mode Button -->
+    <button class="breathing-btn" id="breathingBtn" title="Breathing Exercise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+    </button>
     
     <!-- Main Container -->
     <div class="container">
@@ -815,6 +1220,17 @@
                 </button>
             </div>
         </header>
+        
+        <!-- Favorites Bar -->
+        <div class="favorites-bar" id="favoritesBar" style="display: none;">
+            <div class="favorites-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                Favorites
+            </div>
+            <div class="favorites-list" id="favoritesList"></div>
+        </div>
         
         <!-- Sound Selection -->
         <section class="sound-section">
@@ -1052,6 +1468,78 @@
             </div>
         </div>
         
+        <!-- Analytics Section -->
+        <div id="analytics-section">
+            
+            <!-- Stats Overview -->
+            <div class="analytics-section">
+                <div class="analytics-header">
+                    <div class="analytics-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 20V10M12 20V4M6 20v-6"/>
+                        </svg>
+                        Your Statistics
+                    </div>
+                    <button class="export-btn" id="exportBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Export CSV
+                    </button>
+                </div>
+                
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalSessions">0</div>
+                        <div class="stat-label">Total Sessions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalTime">0h</div>
+                        <div class="stat-label">Total Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="currentStreak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                        <div class="streak-indicator">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="favoriteSound">-</div>
+                        <div class="stat-label">Top Sound</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Session History -->
+            <div class="analytics-section">
+                <div class="analytics-header">
+                    <div class="analytics-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        Recent Sessions
+                    </div>
+                </div>
+                
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <p>No sessions yet. Start playing a sound to begin tracking!</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div><!-- End Analytics Section -->
+        
         <!-- Footer -->
         <footer>
             <p class="footer-text">Scientifically designed sounds for focus & rest</p>
@@ -1094,6 +1582,18 @@
                 <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
         </button>
+    </div>
+    
+    <!-- Breathing Mode Overlay -->
+    <div class="breathing-overlay" id="breathingOverlay">
+        <button class="breathing-close" id="breathingClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+        <div class="breathing-circle" id="breathingCircle"></div>
+        <div class="breathing-text" id="breathingText">Ready</div>
+        <div class="breathing-count" id="breathingCount">4-7-8 Breathing Pattern</div>
     </div>
 
     <script>
@@ -1585,6 +2085,16 @@
                 this.timerRemaining = 0;
                 this.wakeLock = null;
                 
+                // Session tracking
+                this.sessionStartTime = null;
+                this.currentSessionSound = null;
+                this.sessions = [];
+                this.favorites = [];
+                
+                // Breathing mode
+                this.breathingInterval = null;
+                this.breathingCycle = 0;
+                
                 this.init();
             }
             
@@ -1592,8 +2102,13 @@
                 this.bindElements();
                 this.bindEvents();
                 this.loadPreferences();
+                this.loadSessions();
+                this.loadFavorites();
+                this.updateFavoritesBar();
+                this.updateAnalytics();
                 this.registerServiceWorker();
                 this.setupPWA();
+                this.requestNotificationPermission();
                 
                 // Hide loading
                 setTimeout(() => {
@@ -1620,6 +2135,18 @@
                 this.infoSpecs = document.getElementById('infoSpecs');
                 this.headphoneModal = document.getElementById('headphoneModal');
                 this.headphoneConfirm = document.getElementById('headphoneConfirm');
+                
+                // New elements
+                this.themeToggle = document.getElementById('themeToggle');
+                this.breathingBtn = document.getElementById('breathingBtn');
+                this.breathingOverlay = document.getElementById('breathingOverlay');
+                this.breathingClose = document.getElementById('breathingClose');
+                this.breathingCircle = document.getElementById('breathingCircle');
+                this.breathingText = document.getElementById('breathingText');
+                this.breathingCount = document.getElementById('breathingCount');
+                this.favoritesBar = document.getElementById('favoritesBar');
+                this.favoritesList = document.getElementById('favoritesList');
+                this.exportBtn = document.getElementById('exportBtn');
             }
             
             bindEvents() {
@@ -1630,7 +2157,15 @@
                 
                 // Sound selection
                 this.soundCards.forEach(card => {
-                    card.addEventListener('click', () => this.selectSound(card.dataset.sound));
+                    card.addEventListener('click', (e) => {
+                        // Check if clicking on favorite star
+                        if (e.target.classList.contains('favorite-star')) {
+                            this.toggleFavorite(card.dataset.sound);
+                            e.stopPropagation();
+                        } else {
+                            this.selectSound(card.dataset.sound);
+                        }
+                    });
                 });
                 
                 // Play button
@@ -1657,6 +2192,16 @@
                     }
                 });
                 
+                // Theme toggle
+                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+                
+                // Breathing mode
+                this.breathingBtn.addEventListener('click', () => this.startBreathing());
+                this.breathingClose.addEventListener('click', () => this.stopBreathing());
+                
+                // Export
+                this.exportBtn.addEventListener('click', () => this.exportSessions());
+                
                 // Keyboard shortcuts
                 document.addEventListener('keydown', (e) => this.handleKeyboard(e));
                 
@@ -1665,6 +2210,11 @@
                     if (document.hidden && this.audioEngine.isPlaying) {
                         // Keep playing in background
                     }
+                });
+                
+                // End session on page unload
+                window.addEventListener('beforeunload', () => {
+                    this.endSession();
                 });
             }
             
@@ -1711,8 +2261,17 @@
             }
             
             playSound(soundId) {
+                // End previous session
+                if (this.sessionStartTime && this.currentSessionSound) {
+                    this.endSession();
+                }
+                
                 const sound = SOUNDS[soundId];
                 this.currentSound = soundId;
+                
+                // Start new session
+                this.sessionStartTime = Date.now();
+                this.currentSessionSound = soundId;
                 
                 // Update UI
                 this.soundCards.forEach(card => {
@@ -1819,10 +2378,12 @@
                     if (this.timerRemaining <= 0) {
                         clearInterval(this.timerInterval);
                         this.timerInterval = null;
+                        this.endSession();
                         this.audioEngine.stop();
                         this.updatePlayButton(false);
                         this.releaseWakeLock();
                         this.timerDisplay.textContent = '--:--';
+                        this.showNotification('Timer Complete', 'Your session has ended.');
                     }
                 }, 1000);
             }
@@ -1905,6 +2466,11 @@
                     this.volumeSlider.value = volume;
                     this.setVolume(volume);
                 }
+                
+                const theme = localStorage.getItem('sleepserene-theme');
+                if (theme) {
+                    document.body.dataset.theme = theme;
+                }
             }
             
             async registerServiceWorker() {
@@ -1914,6 +2480,321 @@
                     } catch (err) {
                         console.log('SW registration failed:', err);
                     }
+                }
+            }
+            
+            // ============================================
+            // TAB NAVIGATION
+            // ============================================
+            
+            // Removed - analytics now in same view as sounds
+            
+            // ============================================
+            // THEME TOGGLE
+            // ============================================
+            
+            toggleTheme() {
+                const currentTheme = document.body.dataset.theme || 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.body.dataset.theme = newTheme;
+                localStorage.setItem('sleepserene-theme', newTheme);
+            }
+            
+            // ============================================
+            // SESSION TRACKING
+            // ============================================
+            
+            endSession() {
+                if (!this.sessionStartTime || !this.currentSessionSound) return;
+                
+                const duration = Math.floor((Date.now() - this.sessionStartTime) / 1000);
+                
+                // Only save sessions longer than 10 seconds
+                if (duration > 10) {
+                    const session = {
+                        sound: this.currentSessionSound,
+                        soundName: SOUNDS[this.currentSessionSound].name,
+                        duration: duration,
+                        timestamp: this.sessionStartTime,
+                        mode: this.currentMode,
+                        date: new Date(this.sessionStartTime).toISOString().split('T')[0]
+                    };
+                    
+                    this.sessions.push(session);
+                    this.saveSessions();
+                    this.updateAnalytics();
+                }
+                
+                this.sessionStartTime = null;
+                this.currentSessionSound = null;
+            }
+            
+            loadSessions() {
+                const saved = localStorage.getItem('sleepserene-sessions');
+                if (saved) {
+                    try {
+                        this.sessions = JSON.parse(saved);
+                    } catch (e) {
+                        this.sessions = [];
+                    }
+                }
+            }
+            
+            saveSessions() {
+                // Keep only last 100 sessions
+                if (this.sessions.length > 100) {
+                    this.sessions = this.sessions.slice(-100);
+                }
+                localStorage.setItem('sleepserene-sessions', JSON.stringify(this.sessions));
+            }
+            
+            updateAnalytics() {
+                // Total sessions
+                document.getElementById('totalSessions').textContent = this.sessions.length;
+                
+                // Total time
+                const totalSeconds = this.sessions.reduce((sum, s) => sum + s.duration, 0);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                document.getElementById('totalTime').textContent = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+                
+                // Current streak
+                const streak = this.calculateStreak();
+                document.getElementById('currentStreak').textContent = streak;
+                
+                // Favorite sound
+                const soundCounts = {};
+                this.sessions.forEach(s => {
+                    soundCounts[s.sound] = (soundCounts[s.sound] || 0) + 1;
+                });
+                
+                const topSound = Object.keys(soundCounts).reduce((a, b) => 
+                    soundCounts[a] > soundCounts[b] ? a : b, Object.keys(soundCounts)[0]
+                );
+                
+                if (topSound) {
+                    document.getElementById('favoriteSound').textContent = SOUNDS[topSound].name.split(' ')[0];
+                } else {
+                    document.getElementById('favoriteSound').textContent = '-';
+                }
+                
+                // Session history
+                this.renderSessionHistory();
+            }
+            
+            calculateStreak() {
+                if (this.sessions.length === 0) return 0;
+                
+                // Get unique dates
+                const dates = [...new Set(this.sessions.map(s => s.date))].sort().reverse();
+                
+                let streak = 0;
+                const today = new Date().toISOString().split('T')[0];
+                const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                
+                // Check if there's activity today or yesterday
+                if (dates[0] !== today && dates[0] !== yesterday) {
+                    return 0;
+                }
+                
+                // Count consecutive days
+                for (let i = 0; i < dates.length; i++) {
+                    const expectedDate = new Date(Date.now() - (i * 86400000)).toISOString().split('T')[0];
+                    if (dates[i] === expectedDate || (i === 0 && dates[i] === yesterday)) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                }
+                
+                return streak;
+            }
+            
+            renderSessionHistory() {
+                const historyList = document.getElementById('historyList');
+                
+                if (this.sessions.length === 0) {
+                    historyList.innerHTML = `
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                            <p>No sessions yet. Start playing a sound to begin tracking!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const recentSessions = this.sessions.slice(-20).reverse();
+                
+                historyList.innerHTML = recentSessions.map(session => {
+                    const date = new Date(session.timestamp);
+                    const timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                    const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const durationMin = Math.floor(session.duration / 60);
+                    const durationSec = session.duration % 60;
+                    
+                    return `
+                        <div class="history-item">
+                            <div class="history-item-content">
+                                <div class="history-sound">${session.soundName}</div>
+                                <div class="history-meta">${dateStr} • ${timeStr} • ${session.mode}</div>
+                            </div>
+                            <div class="history-duration">${durationMin}:${durationSec.toString().padStart(2, '0')}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            exportSessions() {
+                if (this.sessions.length === 0) {
+                    alert('No sessions to export yet!');
+                    return;
+                }
+                
+                // Create CSV
+                let csv = 'Date,Time,Sound,Mode,Duration (seconds)\\n';
+                this.sessions.forEach(session => {
+                    const date = new Date(session.timestamp);
+                    const dateStr = date.toLocaleDateString('en-US');
+                    const timeStr = date.toLocaleTimeString('en-US');
+                    csv += `${dateStr},${timeStr},${session.soundName},${session.mode},${session.duration}\\n`;
+                });
+                
+                // Download
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `sleepserene-sessions-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            
+            // ============================================
+            // FAVORITES
+            // ============================================
+            
+            loadFavorites() {
+                const saved = localStorage.getItem('sleepserene-favorites');
+                if (saved) {
+                    try {
+                        this.favorites = JSON.parse(saved);
+                    } catch (e) {
+                        this.favorites = [];
+                    }
+                }
+            }
+            
+            toggleFavorite(soundId) {
+                const index = this.favorites.indexOf(soundId);
+                if (index === -1) {
+                    this.favorites.push(soundId);
+                } else {
+                    this.favorites.splice(index, 1);
+                }
+                
+                localStorage.setItem('sleepserene-favorites', JSON.stringify(this.favorites));
+                this.updateFavoritesBar();
+            }
+            
+            updateFavoritesBar() {
+                if (this.favorites.length === 0) {
+                    this.favoritesBar.style.display = 'none';
+                    return;
+                }
+                
+                this.favoritesBar.style.display = 'flex';
+                this.favoritesList.innerHTML = this.favorites.map(soundId => {
+                    const sound = SOUNDS[soundId];
+                    const isActive = this.currentSound === soundId;
+                    return `
+                        <div class="favorite-chip ${isActive ? 'active' : ''}" data-sound="${soundId}">
+                            ${sound.name}
+                        </div>
+                    `;
+                }).join('');
+                
+                // Add click handlers
+                this.favoritesList.querySelectorAll('.favorite-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        this.selectSound(chip.dataset.sound);
+                    });
+                });
+            }
+            
+            // ============================================
+            // BREATHING MODE
+            // ============================================
+            
+            startBreathing() {
+                this.breathingOverlay.classList.add('active');
+                this.breathingCycle = 0;
+                
+                setTimeout(() => {
+                    this.runBreathingCycle();
+                }, 1000);
+            }
+            
+            runBreathingCycle() {
+                const phases = [
+                    { name: 'Inhale', duration: 4000, class: 'inhale' },
+                    { name: 'Hold', duration: 7000, class: 'hold' },
+                    { name: 'Exhale', duration: 8000, class: 'exhale' }
+                ];
+                
+                let phaseIndex = 0;
+                
+                const nextPhase = () => {
+                    if (!this.breathingOverlay.classList.contains('active')) return;
+                    
+                    const phase = phases[phaseIndex];
+                    
+                    this.breathingCircle.className = 'breathing-circle ' + phase.class;
+                    this.breathingText.textContent = phase.name;
+                    
+                    if (phaseIndex === 2) {
+                        this.breathingCycle++;
+                        this.breathingCount.textContent = `Cycle ${this.breathingCycle}`;
+                    }
+                    
+                    phaseIndex = (phaseIndex + 1) % phases.length;
+                    
+                    this.breathingInterval = setTimeout(nextPhase, phase.duration);
+                };
+                
+                nextPhase();
+            }
+            
+            stopBreathing() {
+                this.breathingOverlay.classList.remove('active');
+                if (this.breathingInterval) {
+                    clearTimeout(this.breathingInterval);
+                    this.breathingInterval = null;
+                }
+                this.breathingCircle.className = 'breathing-circle';
+                this.breathingText.textContent = 'Ready';
+                this.breathingCount.textContent = '4-7-8 Breathing Pattern';
+            }
+            
+            // ============================================
+            // NOTIFICATIONS
+            // ============================================
+            
+            async requestNotificationPermission() {
+                if ('Notification' in window && Notification.permission === 'default') {
+                    await Notification.requestPermission();
+                }
+            }
+            
+            showNotification(title, body) {
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification(title, {
+                        body: body,
+                        icon: 'icons/icon-192.png',
+                        badge: 'icons/icon-192.png'
+                    });
                 }
             }
             
