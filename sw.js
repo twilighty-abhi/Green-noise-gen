@@ -1,11 +1,11 @@
-// Serene Sleep - Service Worker
-const CACHE_NAME = 'serene-sleep-v1';
+// Sleep Serene - Service Worker
+const CACHE_NAME = 'sleepserene-v1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './icons/icon.svg',
-  './icons/icon-maskable.svg'
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 // Install event - cache assets

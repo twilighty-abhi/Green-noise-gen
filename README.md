@@ -1,59 +1,76 @@
-# ✨ Serene Sleep - Mindful Green Noise Generator ✨
+# 🧠 Sleep Serene - Focus & Sleep
 
-Welcome to Serene Sleep, a simple yet beautiful web application designed to help you relax, focus, or drift off to sleep with the soothing sounds of green noise. This app features multiple ambiance options and a calming, mindful visualization inspired by tranquility.
+A scientifically-backed sound generator featuring white, pink, brown noise, and binaural beats designed to enhance productivity and improve sleep quality.
 
+## 🔬 Scientific Sound Types
 
-## 📜 Overview
+### Productivity Mode
+- **White Noise** - Equal power across all frequencies (20Hz-20kHz) for maximum masking
+- **Pink Noise** - -3dB/octave rolloff, proven to improve work performance
+- **Brown Noise** - -6dB/octave, deep rumbling for intense concentration
+- **Focus Rain** - Optimized rainfall spectrum for blocking distractions
+- **Beta Beats** (18Hz) - Binaural beats for active thinking and alertness
+- **Gamma Beats** (40Hz) - Peak concentration and memory enhancement
 
-In today's busy world, finding moments of peace can be challenging. Background noise, stress, and racing thoughts can make it hard to unwind or fall asleep. Serene Sleep aims to provide a digital sanctuary by generating customizable green noise – a specific frequency spectrum often compared to natural sounds like waterfalls or deep forests – known for its ability to mask distracting sounds and promote relaxation.
-
-This application combines high-quality audio generation with a minimalist, aesthetically pleasing interface and a slow, meditative visual element, creating a holistic experience for mindfulness and rest.
-
-## 🚀 Live Demo
-
-Experience Serene Sleep directly in your browser:
-
-**[➡️ Launch Serene Sleep Live Demo](https://noise.abhiramnj.com)**
-
+### Sleep Mode
+- **Pink Sleep** - Research shows enhanced deep sleep and memory consolidation
+- **Brown Sleep** - Deeply calming low-frequency dominance
+- **Ocean Waves** - Rhythmic pattern mimics breathing for relaxation
+- **Night Rain** - Gentle, continuous masking optimized for rest
+- **Delta Beats** (2Hz) - Deep sleep induction frequency
+- **Theta Beats** (6Hz) - Promotes drowsiness and sleep onset
 
 ## 🌟 Features
 
-*   **Multiple Green Noise Ambiences:** Choose from several carefully crafted sound profiles:
-    *   🌳 Forest Stream
-    *   🌊 Distant Fall
-    *   🌧️ Gentle Rain
-    *   🍃 Rustling Trees
-    *   🏖️ Calm Waves
-    *   🌌 Deep Space (Ambient)
-*   **Mindful Visualization:** A calming, abstract visualizer featuring:
-    *   A gently pulsing "breathing" circle.
-    *   Slowly drifting particles.
-    *   Smooth color transitions that adapt to the selected ambiance.
-*   **Preset Timers:** Set the noise to automatically fade out and stop after:
-    *   15 minutes
-    *   30 minutes
-    *   90 minutes
-    *   3 hours
-*   **Volume Control:** Adjust the sound level to your preference.
-*   **Play/Stop Controls:** Simple and clear playback management.
-*   **Ambiance Autoplay:** Selecting a new ambiance automatically starts playback.
-*   **Audio Fade-Out:** Timer expiration triggers a smooth volume fade before stopping.
-*   **Responsive Design:** Adapts gracefully to desktops, tablets, and mobile devices.
-*   **Single-File Application:** Easy to deploy and run – everything is in `index.html`.
-*   **Modern Technologies:** Built with HTML5, CSS3 (Variables, Gradients, Grid/Flexbox), and Vanilla JavaScript (Web Audio API, Canvas API).
+- **Dual Mode System** - Switch between energizing productivity and calming sleep themes
+- **Authentic Audio Generation** - Algorithmically precise noise using scientific algorithms
+- **Binaural Beat Synthesis** - Stereo oscillator pairs for brainwave entrainment
+- **Scientific Information** - Each sound includes frequency specs and research-backed benefits
+- **Smart Timers** - Mode-specific presets (Pomodoro 25m for work, 8h for sleep cycles)
+- **PWA Support** - Install as app, works offline with service worker
+- **Keyboard Shortcuts** - Space (play/pause), M (mute), 1-6 (sounds)
+- **Wake Lock** - Prevents screen dimming during sessions
+- **Responsive Design** - Adapts to all screen sizes
+- **Visual Feedback** - Animated visualizer responds to playback
+
+## 🧬 The Science
+
+### Noise Types
+Colored noises are categorized by their power spectral density:
+- **White Noise**: Flat power across all frequencies - excellent for masking
+- **Pink Noise**: 1/f noise with equal energy per octave - more balanced than white
+- **Brown Noise**: 1/f² noise following Brownian motion - deep, rumbling character
+
+Research shows pink noise can enhance deep sleep (N3 stage), improve memory consolidation, and increase sleep spindle density. White noise has been shown to improve concentration in ADHD individuals and reduce sleep onset time.
+
+### Binaural Beats
+Created by playing slightly different frequencies to each ear:
+- Brain perceives the mathematical difference as a "beat"
+- May influence brainwave patterns through frequency following response
+- **Delta (0.5-4Hz)**: Associated with deep, dreamless sleep
+- **Theta (4-8Hz)**: Light sleep, meditation, drowsiness
+- **Beta (13-30Hz)**: Active thinking, focus, alertness
+- **Gamma (30-50Hz)**: Peak cognitive processing, memory
+
+**Note**: Binaural beats require stereo headphones to work properly.
 
 ## 🕹️ How to Use
 
-1.  **Open the App:** Launch the [Live Demo](#-live-demo) or open the `index.html` file locally.
-2.  **(Optional) Choose Ambiance:** Select your preferred sound profile (it will start playing automatically).
-3.  **Play/Stop:** Use the main "Play" or "Stop" buttons to control playback.
-4.  **Adjust Volume:** Use the slider to set the desired sound level.
-5.  **(Optional) Set Timer:** Click one of the timer buttons (15m, 30m, 90m, 3h) to have the sound automatically fade out and stop after that duration.
-6.  **Relax:** Enjoy the calming sounds and visuals.
+1. **Select Mode** - Choose between Focus (productivity) or Sleep mode
+2. **Pick a Sound** - Browse scientifically-designed audio options
+3. **Adjust Volume** - Recommended 40-60dB for sleep, 50-70dB for focus
+4. **Set Timer** - Optional automatic shutoff (Pomodoro 25m, Sleep cycles 90m/8h)
+5. **Read the Science** - Info panel explains each sound's benefits
+6. **Use Headphones** - Required for binaural beats to be effective
+
+### Keyboard Shortcuts
+- `Space` - Play/Pause
+- `M` - Mute/Unmute
+- `1-6` - Select sounds 1 through 6
 
 ## 🛠️ Technology Stack
 
-*   **HTML5:** Semantic structure for the application interface.
+*   **HTML5** - Semantic structure with Web Audio API
 *   **CSS3:**
     *   Styling for layout, appearance, and theme.
     *   CSS Variables for dynamic theming (hue shifting).

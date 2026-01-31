@@ -1,16 +1,16 @@
 {
-  "name": "Serene Sleep - Mindful Green Noise",
-  "short_name": "Serene Sleep",
-  "description": "A minimalist green noise generator for sleep, relaxation, and focus. Choose from soothing ambiances like Forest Stream, Gentle Rain, and more.",
-  "id": "com.abhiramnj.serenessleep",
+  "name": "Sleep Serene - Focus & Sleep",
+  "short_name": "Sleep Serene",
+  "description": "Scientific sound generator with white, pink, brown noise and binaural beats for productivity and sleep",
+  "id": "com.sleepserene.app",
   "author": "Abhiram NJ",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#1a2b1f",
-  "theme_color": "#1f2d24",
+  "background_color": "#0f0f14",
+  "theme_color": "#f59e0b",
   "orientation": "portrait-primary",
-  "categories": ["health", "lifestyle", "utilities"],
+  "categories": ["productivity", "health", "lifestyle"],
   "icons": [
     {
       "src": "icons/icon.svg",
