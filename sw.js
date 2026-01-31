@@ -10,15 +10,12 @@ const ASSETS_TO_CACHE = [
 
 // Install event - cache assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('[SW] Caching app assets');
         return cache.addAll(ASSETS_TO_CACHE);
       })
       .then(() => {
-        console.log('[SW] Assets cached successfully');
         return self.skipWaiting(); // Activate immediately
       })
       .catch((error) => {
@@ -29,7 +26,6 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker...');
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
@@ -37,13 +33,11 @@ self.addEventListener('activate', (event) => {
           cacheNames
             .filter((name) => name !== CACHE_NAME)
             .map((name) => {
-              console.log('[SW] Deleting old cache:', name);
               return caches.delete(name);
             })
         );
       })
       .then(() => {
-        console.log('[SW] Service worker activated');
         return self.clients.claim(); // Take control immediately
       })
   );

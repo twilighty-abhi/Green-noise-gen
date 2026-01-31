@@ -2443,7 +2443,7 @@
                     try {
                         this.wakeLock = await navigator.wakeLock.request('screen');
                     } catch (err) {
-                        console.log('Wake lock request failed:', err);
+                        // Wake lock not supported or failed
                     }
                 }
             }
@@ -2478,7 +2478,7 @@
                     try {
                         await navigator.serviceWorker.register('sw.js');
                     } catch (err) {
-                        console.log('SW registration failed:', err);
+                        // Service worker registration failed
                     }
                 }
             }
